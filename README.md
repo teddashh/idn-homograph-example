@@ -10,8 +10,8 @@
 python3 -m http.server 8000
 # 打開 http://localhost:8000
 ```
-
-## 部署到 Vercel(最快)
+## For FPCUSA Coworker who wants to create the site again using this template -- by Ted 4/16/2026 
+## 部署到 Vercel(最快) 
 
 ### 方法 A:Vercel CLI(最快,約 2 分鐘)
 
