@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>IDN Homograph Attack Demo · Formosa USA / Inteplast SOC Team</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,900;1,400&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --bg-card: #13131a;
+    --bg-elevated: #1c1c26;
+    --border: #2a2a38;
+    --border-strong: #3d3d52;
+    --text: #ececf1;
+    --text-dim: #9a9ab0;
+    --text-faint: #5a5a72;
+    --accent: #d6006e;
+    --accent-glow: rgba(214, 0, 110, 0.35);
+    --warn: #ffb547;
+    --danger: #ff5c5c;
+    --ok: #6fcf97;
+    --font-display: "Fraunces", Georgia, serif;
+    --font-body: "Noto Sans TC", -apple-system, "Segoe UI", sans-serif;
+    --font-mono: "JetBrains Mono", "SF Mono", Consolas, monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(circle at 15% 10%, rgba(214, 0, 110, 0.15) 0%, transparent 40%),
+      radial-gradient(circle at 85% 80%, rgba(100, 50, 200, 0.1) 0%, transparent 40%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .grain {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .wrap {
+    position: relative;
+    z-index: 2;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 40px 32px 80px;
+  }
+
+  /* ── Header / Brand ─────────────────────────────── */
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 56px;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .brand-mark {
+    width: 44px;
+    height: 44px;
+    background: #fff;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px;
+  }
+
+  .brand-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+  }
+
+  .brand-text .name {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 18px;
+    letter-spacing: -0.01em;
+  }
+
+  .brand-text .sub {
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .lang-toggle {
+    display: flex;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 4px;
+    gap: 2px;
+  }
+
+  .lang-toggle button {
+    background: transparent;
+    border: none;
+    color: var(--text-dim);
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 13px;
+    padding: 6px 16px;
+    border-radius: 100px;
+    cursor: pointer;
+    letter-spacing: 0.05em;
+    transition: all 0.2s;
+  }
+
+  .lang-toggle button.active {
+    background: var(--accent);
+    color: #fff;
+    box-shadow: 0 0 20px var(--accent-glow);
+  }
+
+  /* ── Hero ─────────────────────────────── */
+  .hero {
+    margin-bottom: 80px;
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    padding: 6px 12px;
+    border: 1px solid var(--accent);
+    border-radius: 100px;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  .eyebrow::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--accent);
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+  }
+
+  h1 {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: clamp(36px, 6vw, 68px);
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+    margin-bottom: 20px;
+  }
+
+  h1 em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--accent);
+  }
+
+  .lede {
+    font-size: 18px;
+    color: var(--text-dim);
+    max-width: 640px;
+    margin-bottom: 20px;
+  }
+
+  .source-ref {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--text-faint);
+    margin-bottom: 32px;
+  }
+
+  .source-ref a {
+    color: var(--text-dim);
+    text-decoration: underline;
+    text-decoration-color: var(--border-strong);
+    text-underline-offset: 3px;
+    transition: color 0.2s;
+  }
+
+  .source-ref a:hover {
+    color: var(--accent);
+  }
+
+  /* ── Demo Box ─────────────────────────────── */
+  .demo {
+    background: linear-gradient(145deg, var(--bg-card), var(--bg-elevated));
+    border: 1px solid var(--border-strong);
+    border-radius: 20px;
+    padding: 36px;
+    margin-bottom: 64px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .demo::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  }
+
+  .demo-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-faint);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .demo-question {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 28px;
+  }
+
+  .links {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .link-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    transition: all 0.3s;
+  }
+
+  .link-card:hover {
+    border-color: var(--accent);
+    transform: translateX(4px);
+  }
+
+  .link-card a {
+    font-family: var(--font-mono);
+    font-size: 20px;
+    color: #8ab4f8;
+    text-decoration: underline;
+    text-decoration-color: rgba(138, 180, 248, 0.3);
+    text-underline-offset: 4px;
+  }
+
+  .link-card a:hover {
+    text-decoration-color: currentColor;
+  }
+
+  .badge {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    padding: 4px 10px;
+    border-radius: 100px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .badge-safe {
+    background: rgba(111, 207, 151, 0.15);
+    color: var(--ok);
+    border: 1px solid rgba(111, 207, 151, 0.3);
+  }
+
+  .badge-danger {
+    background: rgba(255, 92, 92, 0.12);
+    color: var(--danger);
+    border: 1px solid rgba(255, 92, 92, 0.3);
+  }
+
+  .demo-hint {
+    margin-top: 28px;
+    padding: 18px 20px;
+    background: rgba(255, 181, 71, 0.08);
+    border-left: 3px solid var(--warn);
+    border-radius: 8px;
+    font-size: 14px;
+    color: #ffd893;
+  }
+
+  .demo-hint code {
+    font-family: var(--font-mono);
+    background: rgba(0, 0, 0, 0.4);
+    padding: 2px 8px;
+    border-radius: 4px;
+    color: var(--warn);
+    font-size: 13px;
+  }
+
+  /* ── Kill Chain ─────────────────────────────── */
+  .chain {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 32px 0;
+    position: relative;
+  }
+
+  .chain::before {
+    content: "";
+    position: absolute;
+    left: 34px;
+    top: 30px;
+    bottom: 30px;
+    width: 2px;
+    background: linear-gradient(180deg,
+      var(--border-strong) 0%,
+      var(--accent) 50%,
+      var(--danger) 100%);
+    opacity: 0.4;
+  }
+
+  .chain-step {
+    display: flex;
+    gap: 24px;
+    padding: 20px 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .chain-num {
+    flex-shrink: 0;
+    width: 68px;
+    height: 68px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-strong);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-dim);
+    letter-spacing: 0.05em;
+    transition: all 0.3s;
+  }
+
+  .chain-step:hover .chain-num {
+    border-color: var(--accent);
+    color: var(--accent);
+    box-shadow: 0 0 24px var(--accent-glow);
+  }
+
+  .chain-step-highlight .chain-num {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(214, 0, 110, 0.1);
+    box-shadow: 0 0 20px var(--accent-glow);
+  }
+
+  .chain-body {
+    flex: 1;
+    padding-top: 8px;
+    min-width: 0;
+  }
+
+  .chain-tag {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    padding: 4px 10px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    margin-bottom: 10px;
+  }
+
+  .chain-tag-danger {
+    color: var(--danger);
+    border-color: rgba(255, 92, 92, 0.3);
+    background: rgba(255, 92, 92, 0.08);
+  }
+
+  .chain-body h3 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 20px;
+    margin-bottom: 8px;
+    color: var(--text);
+    letter-spacing: -0.01em;
+  }
+
+  .chain-body p {
+    font-size: 15px;
+    margin-bottom: 0;
+  }
+
+  /* ── Callout ─────────────────────────────── */
+  .callout {
+    margin-top: 40px;
+    padding: 28px 32px;
+    background: linear-gradient(135deg,
+      rgba(214, 0, 110, 0.08),
+      rgba(255, 92, 92, 0.04));
+    border: 1px solid rgba(214, 0, 110, 0.25);
+    border-radius: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .callout::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(180deg, var(--accent), var(--danger));
+  }
+
+  .callout-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+
+  .callout p {
+    color: var(--text);
+    font-size: 15px;
+    margin-bottom: 0;
+  }
+
+  /* ── Sections ─────────────────────────────── */
+  section {
+    margin-bottom: 64px;
+  }
+
+  h2 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 32px;
+    letter-spacing: -0.02em;
+    margin-bottom: 24px;
+    position: relative;
+    padding-left: 20px;
+  }
+
+  h2::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 12px;
+    bottom: 12px;
+    width: 4px;
+    background: var(--accent);
+    border-radius: 2px;
+  }
+
+  p {
+    color: var(--text-dim);
+    margin-bottom: 16px;
+  }
+
+  p strong {
+    color: var(--text);
+    font-weight: 700;
+  }
+
+  code {
+    font-family: var(--font-mono);
+    background: var(--bg-elevated);
+    color: var(--ok);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.9em;
+    border: 1px solid var(--border);
+  }
+
+  ul { list-style: none; }
+
+  ul li {
+    position: relative;
+    padding-left: 28px;
+    margin-bottom: 12px;
+    color: var(--text-dim);
+  }
+
+  ul li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: bold;
+  }
+
+  /* ── Character Comparison Table ─────────────────────────────── */
+  .char-table {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 24px 0;
+    font-family: var(--font-mono);
+    font-size: 14px;
+  }
+
+  .char-table > div {
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+  }
+
+  .char-table > div:nth-child(3n) { border-right: none; }
+  .char-table > div:nth-last-child(-n+3) { border-bottom: none; }
+
+  .char-table .head {
+    background: var(--bg-elevated);
+    color: var(--text-faint);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .char-table .latin { color: var(--ok); }
+  .char-table .cyrillic { color: var(--danger); }
+
+  /* ── Footer ─────────────────────────────── */
+  footer {
+    margin-top: 80px;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    font-size: 13px;
+    color: var(--text-faint);
+  }
+
+  footer .meta {
+    font-family: var(--font-mono);
+    letter-spacing: 0.05em;
+  }
+
+  /* ── Language visibility ─────────────────────────────── */
+  .lang-en { display: none; }
+  body.en .lang-zh { display: none; }
+  body.en .lang-en { display: block; }
+  body.en .lang-en.inline { display: inline; }
+
+  /* ── Responsive ─────────────────────────────── */
+  @media (max-width: 640px) {
+    .wrap { padding: 24px 20px 60px; }
+    header { flex-direction: column; gap: 20px; align-items: flex-start; }
+    .demo { padding: 24px; }
+    .link-card { flex-direction: column; align-items: flex-start; gap: 10px; }
+    .link-card a { font-size: 16px; word-break: break-all; }
+    .char-table { font-size: 12px; }
+    .char-table > div { padding: 10px 12px; }
+  }
+
+  /* ── Entrance animations ─────────────────────────────── */
+  .hero > * { animation: rise 0.8s ease-out backwards; }
+  .hero > *:nth-child(1) { animation-delay: 0.05s; }
+  .hero > *:nth-child(2) { animation-delay: 0.15s; }
+  .hero > *:nth-child(3) { animation-delay: 0.25s; }
+  .demo { animation: rise 0.8s ease-out 0.35s backwards; }
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+<div class="grain"></div>
+
+<div class="wrap">
+
+  <!-- ── Header ─────────────────────────────── -->
+  <header>
+    <div class="brand">
+      <div class="brand-mark">
+        <svg viewBox="0 0 100 60" xmlns="http://www.w3.org/2000/svg" width="32" height="20">
+          <path d="M10 30 Q 30 5, 50 30 Q 70 55, 90 30" stroke="#d6006e" stroke-width="3" fill="none"/>
+          <path d="M10 30 Q 30 55, 50 30 Q 70 5, 90 30" stroke="#d6006e" stroke-width="3" fill="none"/>
+          <rect x="40" y="20" width="20" height="4" fill="#d6006e"/>
+          <rect x="40" y="36" width="20" height="4" fill="#d6006e"/>
+          <rect x="48" y="18" width="4" height="24" fill="#d6006e"/>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <span class="name">Formosa USA / Inteplast</span>
+        <span class="sub">SOC Team · Study Note</span>
+      </div>
+    </div>
+    <div class="lang-toggle" id="langToggle">
+      <button data-lang="zh" class="active">中文</button>
+      <button data-lang="en">English</button>
+    </div>
+  </header>
+
+  <!-- ── Hero ─────────────────────────────── -->
+  <div class="hero">
+    <div class="eyebrow lang-zh">SOC Study Note · 04 / 16 / 2026</div>
+    <div class="eyebrow lang-en">SOC Study Note · 04 / 16 / 2026</div>
+
+    <h1 class="lang-zh">同形異義字攻擊 Demo<br><em>IDN Homograph Attack</em></h1>
+    <h1 class="lang-en">IDN Homograph Attack<br><em>Awareness Demo</em></h1>
+
+    <p class="lede lang-zh">
+      本 study note 取材自 BBC 最新報導的 Booking.com 資料外洩案例 —— 攻擊者如何結合
+      <strong>credential theft</strong>、<strong>reservation hijacking</strong> 與
+      <strong>IDN homograph spoofing</strong>,打造一條讓使用者幾乎無法察覺的
+      phishing kill chain。
+    </p>
+    <p class="lede lang-en">
+      This study note is based on BBC's reporting on the Booking.com data leak — how
+      attackers chain <strong>credential theft</strong>, <strong>reservation hijacking</strong>,
+      and <strong>IDN homograph spoofing</strong> into a phishing kill chain that victims
+      cannot realistically detect.
+    </p>
+
+    <p class="source-ref lang-zh">
+      📎 Source:
+      <a href="https://www.bbc.com/news/articles/cly00jnnxypo" target="_blank" rel="noopener">bbc.com/news/articles/cly00jnnxypo</a>
+    </p>
+    <p class="source-ref lang-en">
+      📎 Source:
+      <a href="https://www.bbc.com/news/articles/cly00jnnxypo" target="_blank" rel="noopener">bbc.com/news/articles/cly00jnnxypo</a>
+    </p>
+  </div>
+
+  <!-- ── Demo Box ─────────────────────────────── -->
+  <div class="demo">
+    <div class="demo-label lang-zh">▸ 現場實驗</div>
+    <div class="demo-label lang-en">▸ Live Experiment</div>
+
+    <div class="demo-question lang-zh">下面兩個連結,哪一個是假的?</div>
+    <div class="demo-question lang-en">Which of these two links is fake?</div>
+
+    <div class="links">
+      <div class="link-card">
+        <a href="https://fpcusa.com" target="_blank" rel="noopener">https://fpcusa.com</a>
+        <span class="badge badge-safe lang-zh">正牌</span>
+        <span class="badge badge-safe lang-en">Real</span>
+      </div>
+      <div class="link-card">
+        <a href="https://fpcusа.com" target="_blank" rel="noopener">https://fpcusа.com</a>
+        <span class="badge badge-danger lang-zh">假的</span>
+        <span class="badge badge-danger lang-en">Fake</span>
+      </div>
+    </div>
+
+    <div class="demo-hint lang-zh">
+      ⚠️ 點下去看網址列 —— 第二個會變成 <code>xn--fpcus-8ve.com</code>,
+      瀏覽器可能跳出警告。兩個連結顯示的文字在肉眼上幾乎無法分辨。
+    </div>
+    <div class="demo-hint lang-en">
+      ⚠️ Click and watch the address bar — the second becomes <code>xn--fpcus-8ve.com</code>,
+      and your browser may warn you. To the human eye, the two links look identical.
+    </div>
+  </div>
+
+  <!-- ── Kill Chain ─────────────────────────────── -->
+  <section>
+    <h2 class="lang-zh">完整攻擊鏈 · Attack Kill Chain</h2>
+    <h2 class="lang-en">The Full Attack Kill Chain</h2>
+
+    <p class="lang-zh">
+      很多人以為「使用者資料外洩」只是終端使用者自己不小心 —— 但實際上,
+      在 Booking.com 這種案例裡,<strong>受害者的資料是先從平台端被偷走的</strong>。
+      整條 kill chain 大致長這樣:
+    </p>
+    <p class="lang-en">
+      Most people assume user data leaks come from careless end-users. But in cases like
+      Booking.com, <strong>victim data is first stolen from the platform side</strong>.
+      The full kill chain looks like this:
+    </p>
+
+    <div class="chain">
+      <!-- Step 1 -->
+      <div class="chain-step">
+        <div class="chain-num">01</div>
+        <div class="chain-body">
+          <div class="chain-tag">Initial Access</div>
+          <h3 class="lang-zh">攻擊 Booking.com 的飯店合作夥伴</h3>
+          <h3 class="lang-en">Target Booking.com's hotel partners</h3>
+          <p class="lang-zh">
+            攻擊者不直接打 Booking.com 主系統(太硬),而是鎖定它的
+            <strong>partner hotels</strong>。透過 <strong>spear phishing email</strong>
+            (偽裝成 Booking.com 官方通知、客訴、訂單爭議)誘使飯店員工點擊連結,
+            在飯店內部端點植入 <strong>info-stealer malware</strong>(例如 Vidar、RedLine、Lumma)。
+          </p>
+          <p class="lang-en">
+            Attackers don't hit Booking.com's core systems (too hardened). They target
+            <strong>partner hotels</strong> with <strong>spear phishing emails</strong> —
+            posing as Booking.com support, guest complaints, or reservation disputes — to
+            drop <strong>info-stealer malware</strong> (Vidar, RedLine, Lumma) onto hotel endpoints.
+          </p>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="chain-step">
+        <div class="chain-num">02</div>
+        <div class="chain-body">
+          <div class="chain-tag">Credential Theft</div>
+          <h3 class="lang-zh">竊取 Extranet 後台登入憑證</h3>
+          <h3 class="lang-en">Steal Extranet admin credentials</h3>
+          <p class="lang-zh">
+            Info-stealer 會抓取瀏覽器儲存的 <strong>credentials</strong>、
+            <strong>session cookies</strong>、<strong>authentication tokens</strong>。
+            攻擊者拿到飯店的 Booking.com <strong>Extranet admin panel</strong>
+            登入權限 —— 這是飯店管理訂房、聯絡房客、查看付款資料的後台。
+          </p>
+          <p class="lang-en">
+            Info-stealers exfiltrate browser-stored <strong>credentials</strong>,
+            <strong>session cookies</strong>, and <strong>authentication tokens</strong>.
+            Attackers gain access to the hotel's <strong>Booking.com Extranet admin panel</strong> —
+            where reservations, guest messaging, and payment data live.
+          </p>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="chain-step">
+        <div class="chain-num">03</div>
+        <div class="chain-body">
+          <div class="chain-tag">Dark Web Monetization</div>
+          <h3 class="lang-zh">在暗網掛單,尋找買家或合作夥伴</h3>
+          <h3 class="lang-en">Monetize on dark-web forums</h3>
+          <p class="lang-zh">
+            BBC 報導指出,攻擊者在 <strong>dark web forums</strong> 張貼廣告,
+            願意花最高 <strong>$2,000 USD</strong> 收購飯店的 Extranet credentials。
+            這形成一個 <strong>Initial Access Broker(IAB)</strong> 的交易生態。
+          </p>
+          <p class="lang-en">
+            BBC reported that threat actors post ads on <strong>dark web forums</strong>,
+            offering up to <strong>$2,000 USD</strong> per set of Extranet credentials. This
+            forms a thriving <strong>Initial Access Broker (IAB)</strong> marketplace.
+          </p>
+        </div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="chain-step">
+        <div class="chain-num">04</div>
+        <div class="chain-body">
+          <div class="chain-tag">Reconnaissance</div>
+          <h3 class="lang-zh">從後台取得使用者 PII 與訂房資料</h3>
+          <h3 class="lang-en">Exfiltrate guest PII and reservation data</h3>
+          <p class="lang-zh">
+            登入 Extranet 後,攻擊者可以看到所有房客的
+            <strong>Personally Identifiable Information (PII)</strong> ——
+            姓名、email、電話、入住 / 退房日期、訂房編號、部分信用卡資料。
+            這裡是整條鏈中最關鍵的一步:<strong>user 的資料在這個時間點就已經外洩了</strong>,
+            使用者本人還完全不知道。
+          </p>
+          <p class="lang-en">
+            Once inside the Extranet, attackers harvest guest
+            <strong>Personally Identifiable Information (PII)</strong> — names, emails, phone
+            numbers, check-in/out dates, booking IDs, partial card data. This is the critical
+            pivot: <strong>user data is already compromised at this stage</strong>, and the
+            victim has no idea.
+          </p>
+        </div>
+      </div>
+
+      <!-- Step 5 -->
+      <div class="chain-step">
+        <div class="chain-num">05</div>
+        <div class="chain-body">
+          <div class="chain-tag">Social Engineering</div>
+          <h3 class="lang-zh">偽裝飯店,發送高擬真釣魚訊息(Reservation Hijacking)</h3>
+          <h3 class="lang-en">Impersonate the hotel · Reservation Hijacking</h3>
+          <p class="lang-zh">
+            攻擊者用被盜的 Extranet 帳號,<strong>透過 Booking.com 官方訊息系統</strong>
+            或 WhatsApp / SMS 聯絡房客,訊息裡精準寫出正確的飯店名、日期、訂房編號。
+            受害者正在等飯店聯絡、訊息又 100% 合法 —— 這就是 Norton 所稱的
+            <strong>"Reservation Hijacking"</strong>,比傳統 phishing 威脅等級高出數倍。
+          </p>
+          <p class="lang-en">
+            Using stolen Extranet accounts, attackers message guests <strong>through
+            Booking.com's official messaging system</strong> or WhatsApp/SMS, referencing
+            real hotel names, dates, and booking IDs. The victim is expecting this message
+            and it's 100% legitimate-looking — this is what Norton calls
+            <strong>"Reservation Hijacking"</strong>, orders of magnitude more dangerous
+            than generic phishing.
+          </p>
+        </div>
+      </div>
+
+      <!-- Step 6 -->
+      <div class="chain-step chain-step-highlight">
+        <div class="chain-num">06</div>
+        <div class="chain-body">
+          <div class="chain-tag chain-tag-danger">◆ IDN Homograph ◆</div>
+          <h3 class="lang-zh">訊息中夾帶同形異義字假連結</h3>
+          <h3 class="lang-en">Embed an IDN homograph fake link</h3>
+          <p class="lang-zh">
+            訊息裡的付款連結用 <strong>IDN homograph spoofing</strong> 偽裝 ——
+            例如 <code>booking.com</code> 裡的 o 被西里爾 о 取代,
+            實際會導向 <code>xn--bking-qmb.com</code>。
+            受害者肉眼看到的是熟悉的網址,點下去卻進入
+            <strong>attacker-controlled fake payment page</strong>,頁面視覺 100% 複製官網。
+          </p>
+          <p class="lang-en">
+            The payment link in the message uses <strong>IDN homograph spoofing</strong> —
+            e.g. the o in <code>booking.com</code> replaced with Cyrillic о, actually resolving
+            to <code>xn--bking-qmb.com</code>. The victim sees a familiar URL, but lands on
+            an <strong>attacker-controlled fake payment page</strong> with pixel-perfect branding.
+          </p>
+        </div>
+      </div>
+
+      <!-- Step 7 -->
+      <div class="chain-step">
+        <div class="chain-num">07</div>
+        <div class="chain-body">
+          <div class="chain-tag chain-tag-danger">Impact</div>
+          <h3 class="lang-zh">取得信用卡 / 誘導銀行轉帳</h3>
+          <h3 class="lang-en">Harvest cards · Trigger wire transfers</h3>
+          <p class="lang-zh">
+            在假的付款頁面,受害者輸入信用卡資料被
+            <strong>card skimming</strong> 擷取;或被誘導進行
+            <strong>wire transfer fraud</strong>。資金一旦離開帳戶,追回機率極低。
+            澳洲 ACCC 資料顯示此類攻擊年成長 <strong>580%</strong>。
+          </p>
+          <p class="lang-en">
+            On the fake payment page, card data is captured via <strong>card skimming</strong>
+            or the victim is pushed into a <strong>wire transfer fraud</strong>. Once funds
+            leave the account, recovery is unlikely. Australia's ACCC reports this attack
+            class has grown <strong>580% year-over-year</strong>.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="callout-label lang-zh">💡 關鍵洞察</div>
+      <div class="callout-label lang-en">💡 Key Insight</div>
+      <p class="lang-zh">
+        這條 kill chain 的可怕之處:前 5 步使用者<strong>完全無感</strong>。
+        當受害者看到釣魚訊息時,他們的資料已經在攻擊者手上好幾天甚至好幾週了。
+        訊息來自真的 booking.com、內容 100% 正確、連結用 homograph 偽裝 ——
+        這三個條件同時成立,<strong>單純靠使用者警覺幾乎不可能防禦</strong>。
+        必須靠 <strong>defense-in-depth</strong>:平台端的 credential hardening、
+        MFA、DMARC、DNS 監控、員工訓練、IDN 警告。
+      </p>
+      <p class="lang-en">
+        The terrifying part of this kill chain: steps 1–5 are <strong>invisible to the user</strong>.
+        By the time the phishing message arrives, their data has been in attacker hands for
+        days or weeks. The message comes from real booking.com, the content is 100% accurate,
+        the link is homograph-spoofed — <strong>user vigilance alone cannot defend against this</strong>.
+        <strong>Defense-in-depth</strong> is required: platform-side credential hardening,
+        MFA, DMARC, DNS monitoring, security awareness training, and IDN warning systems.
+      </p>
+    </div>
+  </section>
+
+  <!-- ── Why ─────────────────────────────── -->
+  <section>
+    <h2 class="lang-zh">為什麼肉眼看不出來?</h2>
+    <h2 class="lang-en">Why can't you spot it?</h2>
+
+    <p class="lang-zh">
+      第二個連結的 <strong>a</strong> 不是英文字母的 a(Unicode <code>U+0061</code>),
+      而是<strong>西里爾字母 (Cyrillic script)</strong> 的 а(<code>U+0430</code>)。
+      兩個 <strong>glyph(字形)</strong>在螢幕上一模一樣,但在電腦眼中是完全不同的
+      <strong>code point(碼位)</strong>。
+    </p>
+    <p class="lang-en">
+      The <strong>a</strong> in the second link isn't the Latin letter a (U+0061) —
+      it's the <strong>Cyrillic</strong> letter а (U+0430). They render identically on screen
+      but are entirely different characters to a computer.
+    </p>
+
+    <p class="lang-zh">
+      瀏覽器依照 <strong>IDN (Internationalized Domain Name)</strong> 標準
+      (<strong>RFC 3492 · Punycode</strong>)把含有非 ASCII 字元的網域轉成
+      <code>xn--</code> 開頭的 <strong>ACE (ASCII Compatible Encoding)</strong> 形式。
+      所以實際連出去的網址是 <code>xn--fpcus-8ve.com</code>,而不是 <code>fpcusa.com</code>。
+      這種攻擊手法稱為 <strong>IDN Homograph Attack(同形異義字攻擊)</strong>,
+      也被歸類為 <strong>homoglyph spoofing</strong> 的一種。
+    </p>
+    <p class="lang-en">
+      Behind the scenes, browsers convert non-Latin domains into <strong>Punycode</strong> —
+      an ASCII encoding. So you're actually connecting to <code>xn--fpcus-8ve.com</code>,
+      not <code>fpcusa.com</code>. This technique is called an
+      <strong>IDN Homograph Attack</strong>.
+    </p>
+
+    <div class="char-table">
+      <div class="head lang-zh">拉丁字母</div>
+      <div class="head lang-en">Latin</div>
+      <div class="head lang-zh">西里爾字母</div>
+      <div class="head lang-en">Cyrillic</div>
+      <div class="head lang-zh">看起來</div>
+      <div class="head lang-en">Looks like</div>
+
+      <div class="latin">a · U+0061</div>
+      <div class="cyrillic">а · U+0430</div>
+      <div class="lang-zh">一模一樣</div><div class="lang-en">Identical</div>
+
+      <div class="latin">c · U+0063</div>
+      <div class="cyrillic">с · U+0441</div>
+      <div class="lang-zh">一模一樣</div><div class="lang-en">Identical</div>
+
+      <div class="latin">e · U+0065</div>
+      <div class="cyrillic">е · U+0435</div>
+      <div class="lang-zh">一模一樣</div><div class="lang-en">Identical</div>
+
+      <div class="latin">o · U+006F</div>
+      <div class="cyrillic">о · U+043E</div>
+      <div class="lang-zh">一模一樣</div><div class="lang-en">Identical</div>
+
+      <div class="latin">p · U+0070</div>
+      <div class="cyrillic">р · U+0440</div>
+      <div class="lang-zh">一模一樣</div><div class="lang-en">Identical</div>
+    </div>
+  </section>
+
+  <!-- ── How Attackers Use This ─────────────────────────────── -->
+  <section>
+    <h2 class="lang-zh">攻擊者實際怎麼用</h2>
+    <h2 class="lang-en">How attackers weaponize it</h2>
+
+    <ul class="lang-zh">
+      <li>透過 <strong>phishing email</strong> 或 <strong>smishing (SMS phishing)</strong>、<strong>WhatsApp phishing</strong> 發送連結,顯示文字是 <code>fpcusa.com</code></li>
+      <li>受害者肉眼無法辨識 <strong>homograph spoofing</strong>,點擊連結</li>
+      <li>導向 <strong>attacker-controlled fake login page</strong>(HTML / CSS / 商標 100% clone)</li>
+      <li>輸入 credentials 被 <strong>credential harvesting</strong> 擷取 → 攻擊者登入真網站</li>
+      <li>若結合企業 VPN、SSO、OA、ERP、procurement portal → 升級為 <strong>account takeover (ATO)</strong>、<strong>supply chain compromise</strong>,引發嚴重 data breach</li>
+    </ul>
+    <ul class="lang-en">
+      <li>Phishing email or WhatsApp with link text <code>fpcusa.com</code></li>
+      <li>Victim cannot distinguish the difference and clicks</li>
+      <li>Lands on a pixel-perfect fake login page (HTML / CSS / Logo all copied)</li>
+      <li>Enters credentials → stolen → attacker logs into the real site</li>
+      <li>Combined with VPN, OA, or procurement portals → severe data exposure</li>
+    </ul>
+
+    <p class="lang-zh">
+      這也是 Booking.com 近幾年反覆被攻擊的原因 —— 使用者本來就在等飯店聯絡,
+      訊息裡又有正確的訂房資料,戒心降到最低。
+    </p>
+    <p class="lang-en">
+      This is the same pattern behind repeated Booking.com scams — victims are expecting
+      hotel messages, the message contains real reservation details, and their guard is down.
+    </p>
+  </section>
+
+  <!-- ── Defense ─────────────────────────────── -->
+  <section>
+    <h2 class="lang-zh">怎麼保護自己</h2>
+    <h2 class="lang-en">How to protect yourself</h2>
+
+    <ul class="lang-zh">
+      <li><strong>不要點訊息裡的連結去登入或付款</strong> —— 自己打開 App、手動輸入網址、或用 bookmark</li>
+      <li><strong>檢查 URL 時看最右邊的 root domain</strong> —— <code>secure-fpcusa.com</code> 不是 fpcusa.com</li>
+      <li><strong>任何要求 wire transfer(銀行轉帳)的訊息幾乎都是詐騙</strong></li>
+      <li><strong>啟用 Multi-Factor Authentication (MFA)</strong> —— 最好用 FIDO2 / passkey,可以抵禦 credential phishing</li>
+      <li><strong>保持瀏覽器更新</strong> —— Chrome / Edge / Firefox 都有內建 <strong>IDN display policy</strong> 偵測</li>
+      <li><strong>公司 (Enterprise) 層級</strong>:<strong>defensive domain registration</strong>、<strong>DMARC / SPF / DKIM</strong> email authentication、<strong>DNS monitoring</strong>、<strong>threat intelligence feeds</strong>、定期 <strong>phishing simulation</strong> 訓練</li>
+      <li><strong>SOC 偵測</strong>:監控 <strong>newly registered domains (NRDs)</strong>、異常 <strong>Punycode / IDN</strong> 網域、用 <strong>DNSTwist</strong> 掃描針對自家 brand 的 typosquatting 變體</li>
+    </ul>
+    <ul class="lang-en">
+      <li><strong>Don't click links in messages to log in or pay</strong> — open the app, type the URL, or use bookmarks</li>
+      <li><strong>Look at the rightmost root domain</strong> — <code>secure-fpcusa.com</code> is NOT fpcusa.com</li>
+      <li><strong>Any request for a wire transfer is almost always a scam</strong></li>
+      <li><strong>Enable multi-factor authentication (MFA)</strong> — stolen passwords alone won't get in</li>
+      <li><strong>Keep your browser updated</strong> — Chrome / Edge / Firefox have built-in homograph detection</li>
+      <li><strong>At the org level: defensive registration + DMARC + regular training</strong></li>
+    </ul>
+  </section>
+
+  <!-- ── Footer ─────────────────────────────── -->
+  <footer>
+    <div>
+      <span class="lang-zh">Formosa USA / Inteplast SOC Team · Internal Security Awareness</span>
+      <span class="lang-en">Formosa USA / Inteplast SOC Team · Internal Security Awareness</span>
+    </div>
+    <div class="meta">Study Note · 04 / 16 / 2026</div>
+  </footer>
+
+</div>
+
+<script>
+  const toggle = document.getElementById("langToggle");
+  const body = document.body;
+  const htmlEl = document.documentElement;
+
+  toggle.addEventListener("click", (e) => {
+    const btn = e.target.closest("button");
+    if (!btn) return;
+    const lang = btn.dataset.lang;
+
+    toggle.querySelectorAll("button").forEach(b => b.classList.toggle("active", b === btn));
+
+    if (lang === "en") {
+      body.classList.add("en");
+      htmlEl.setAttribute("lang", "en");
+    } else {
+      body.classList.remove("en");
+      htmlEl.setAttribute("lang", "zh-TW");
+    }
+  });
+</script>
+
+</body>
+</html>
