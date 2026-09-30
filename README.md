@@ -1,78 +1,89 @@
-# Homograph Attack Awareness Demo
+# IDN Homograph Attack Awareness Demo
 
-一個用來向同事示範 IDN Homograph Attack 的教學頁面。中英文切換、單頁、純靜態。
+**English** · [繁體中文](README.zh-TW.md)
 
-## 本機預覽
+A single-page, bilingual demo for showing coworkers how an IDN homograph attack hides a fake domain behind a familiar spelling.
 
-直接用瀏覽器打開 `index.html` 就能看。或跑個簡單的 local server:
+**Project page:** https://teddashh.github.io/idn-homograph-example/
+
+**Live demo:** https://project-9ogsa.vercel.app
+
+The whole demo is one static `index.html` with a 中文 / English toggle, written in April 2026 as a SOC study note. It opens with a question (which of these two links is fake?), walks through a seven-step phishing kill chain based on [BBC reporting](https://www.bbc.com/news/articles/cly00jnnxypo) on Booking.com "reservation hijack" scams, explains why the Latin and Cyrillic letters look identical, and ends with a defense checklist.
+
+## Preview locally
+
+Open `index.html` in a browser, or serve the folder:
 
 ```bash
+git clone https://github.com/teddashh/idn-homograph-example
+cd idn-homograph-example
 python3 -m http.server 8000
-# 打開 http://localhost:8000
+# then open http://localhost:8000
 ```
-## For FPCUSA Coworker who wants to create the site again using this template -- by Ted 4/16/2026 
-## 部署到 Vercel(最快) 
 
-### 方法 A:Vercel CLI(最快,約 2 分鐘)
+## Deploy your own copy
+
+For coworkers who want to rebuild this demo from the template. There is no build step: Vercel serves `index.html` as is, and `vercel.json` adds the response headers.
+
+### Option A: Vercel CLI (about two minutes)
 
 ```bash
-# 安裝 CLI(如果還沒裝)
+# install the CLI if you do not have it yet
 npm install -g vercel
 
-# 在專案資料夾裡
-cd homograph-demo
+# from the project folder
+cd idn-homograph-example
 vercel
-
-# 第一次會問幾個問題,全部按 Enter 用預設值就好
-# 部署完會給你一個 https://xxx.vercel.app 網址
 ```
 
-之後要更新就跑 `vercel --prod`。
+The first run asks a few setup questions; the defaults are fine. When it finishes you get a `https://<project>.vercel.app` URL. The first deployment of a new project always goes to production. After that, `vercel` creates a preview deployment and `vercel --prod` updates production.
 
-### 方法 B:從 GitHub 連動(適合之後要持續更新)
+### Option B: import from GitHub (for ongoing updates)
 
-1. 把這個資料夾推到一個 GitHub repo
-2. 到 https://vercel.com/new
-3. Import 那個 repo
-4. Framework Preset 選 **Other**(因為是純靜態)
-5. Build Command 留空,Output Directory 留空
-6. 按 Deploy
+1. Push this folder to a GitHub repository.
+2. Go to https://vercel.com/new
+3. Import that repository.
+4. Set Framework Preset to **Other** (it is a plain static site).
+5. Leave Build Command and Output Directory empty.
+6. Click Deploy. Later pushes to the production branch redeploy automatically.
 
-### 方法 C:拖拉上傳(最簡單,適合一次性)
+### Option C: drag and drop (simplest, for a one-off)
 
-1. 把整個 `homograph-demo/` 資料夾壓成 zip
-2. 到 https://vercel.com/new
-3. 直接把 zip 拖進去
+1. Go to https://vercel.com/drop
+2. Drag the project folder, or a `.zip` of it, onto the page.
 
-## 檔案結構
+## Files
 
 ```
-homograph-demo/
-├── index.html       ← 主頁面(中英雙語,含所有內容)
-├── vercel.json      ← Vercel 設定(security headers)
-└── README.md        ← 這份文件
+idn-homograph-example/
+├── index.html                  the demo (bilingual, all content and styles inline)
+├── vercel.json                 Vercel settings (security headers, clean URLs)
+├── site/                       project page for GitHub Pages, generated from site/page.json
+├── .github/workflows/pages.yml deploys site/ to GitHub Pages
+├── README.md                   this file
+└── README.zh-TW.md             Traditional Chinese version
 ```
 
-## 給同事看的時候怎麼講
+## How to present it
 
-建議流程:
+Suggested flow:
 
-1. **打開頁面,直接問**:「下面這兩個連結,哪一個是假的?」
-   → 99% 的人答不出來或猜錯
-2. **請他們點第二個** → 看網址列變成 `xn--fpcus-8ve.com`
-3. **解釋原理**:西里爾 а vs 拉丁 a,兩者在螢幕上完全一樣
-4. **連回 Booking.com 詐騙案例** → 這就是近期新聞裡飯店住客被騙的手法
-5. **收尾講防禦**:MFA、不點訊息連結、檢查網址最右邊的根網域
+1. **Open the page and ask:** "Which of these two links is fake?" Most people cannot tell, or guess wrong.
+2. **Have them click the second link.** The address bar shows an `xn--` Punycode name instead of the familiar spelling.
+3. **Explain why:** the Cyrillic а (U+0430) and the Latin a (U+0061) look the same on screen but are different characters.
+4. **Connect it to the Booking.com case:** this is how guests in the recent news were tricked.
+5. **Close with defenses:** MFA, do not log in or pay from links in messages, and check the root domain at the right end of the address.
 
-## 注意事項
+## Notes
 
-- 點「假連結」會 404 或被瀏覽器擋下來 —— 這是**預期行為**,不是 bug
-- 如果瀏覽器直接把顯示文字也變成 `xn--` 版,表示它的 Homograph 防護正在工作
-  → 這本身就是一個好的教學點
-- 頁面已設定 `noindex` —— 不會被搜尋引擎收錄
+- The fake link is not supposed to load. Expect a "site can't be reached" error or a browser warning. That is expected, not a bug.
+- If the browser shows the `xn--` form even in the link text, its homograph protection is working. That is a good teaching point in itself.
+- The page carries a `noindex, nofollow` robots meta tag, and `vercel.json` sends the same `X-Robots-Tag` header, so the deployment stays out of search results. `vercel.json` also sends `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, and `Referrer-Policy: no-referrer`.
+- The $2,000 and 580% figures in the kill chain are not in the linked BBC article. Check their sources before you quote them.
 
-## 自訂
+## Customize
 
-- 想換成公司真正的 Logo:替換 `index.html` 中 `.brand-mark` 區塊裡的 SVG
-- 想加更多範例字:在 `.char-table` 區塊照格式加
-- 想換配色:改最上面 `:root` 裡的 CSS 變數
+- **Example domain:** the real and lookalike domains are hard-coded in several places: the page title, the header, both demo links (link text and `href`), the address-bar hint, the "Why can't you spot it?" explanation, the "How attackers weaponize it" list, the checklist, and the footer. Search `index.html` for the domain and replace every occurrence, then recompute the Punycode form. For example, `python3 -c 'print("exаmple.com".encode("idna"))'` (the `а` in that string is Cyrillic) prints `b'xn--exmple-4nf.com'`.
+- **Logo:** replace the `<img>` inside the `.brand-mark` block. It currently loads the logo from an external URL.
+- **More lookalike letters:** add rows to the `.char-table` block in the same format (a Latin cell, a Cyrillic cell, then the 一模一樣 / Identical cells).
+- **Colors:** edit the CSS variables in `:root` at the top of `index.html`.
