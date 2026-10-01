@@ -62,6 +62,7 @@ idn-homograph-example/
 ├── vercel.json                 Vercel settings (security headers, clean URLs)
 ├── site/                       project page for GitHub Pages, generated from site/page.json
 ├── .github/workflows/pages.yml deploys site/ to GitHub Pages
+├── LICENSE                     MIT license
 ├── README.md                   this file
 └── README.zh-TW.md             Traditional Chinese version
 ```
@@ -89,3 +90,7 @@ Suggested flow:
 - **Logo:** the `.brand-mark` block holds a small inline SVG (a generic bank icon), so the page loads no external images. Replace the SVG to change it.
 - **More lookalike letters:** add rows to the `.char-table` block in the same format (a Latin cell, a Cyrillic cell, then the 一模一樣 / Identical cells).
 - **Colors:** edit the CSS variables in `:root` at the top of `index.html`.
+
+## License
+
+MIT, see LICENSE.
