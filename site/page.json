@@ -217,7 +217,7 @@
     },
     "title": {
       "en": "What the demo teaches people to do.",
-      "zh": "這個 demo 教大家做的事。"
+      "zh": "這個 demo 要教的事。"
     },
     "intro": {
       "en": "Taken from the demo's closing section. The first five are habits anyone can keep; the last one is for security and IT teams.",
@@ -268,7 +268,7 @@
         },
         "body": {
           "en": "With multi-factor authentication, a stolen password alone does not get in. FIDO2 keys and passkeys also resist credential phishing.",
-          "zh": "有了多因素驗證，只偷到密碼也登不進去。FIDO2 金鑰與 passkey 還能抵擋憑證釣魚。"
+          "zh": "有了多因素驗證，只偷到密碼也登不進去。FIDO2 金鑰與 passkey 還能抵擋帳密釣魚。"
         },
         "tag": "FIDO2 · passkey"
       },

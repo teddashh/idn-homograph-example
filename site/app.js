@@ -63,6 +63,32 @@
     });
   });
 
+  // Chinese has no spaces between words, so a long heading can break inside a
+  // word. Mark the word boundaries (Intl.Segmenter) as break points; the
+  // stylesheet keeps the characters between them together.
+  if (window.Intl && Intl.Segmenter) {
+    var segmenter = new Intl.Segmenter("zh-Hant", { granularity: "word" });
+    var han = /[\u3400-\u9fff\uf900-\ufaff]/;
+    document.querySelectorAll('h1[lang^="zh"], h2[lang^="zh"], h1 [lang^="zh"], h2 [lang^="zh"], .quote[lang^="zh"]').forEach(function (heading) {
+      var walker = document.createTreeWalker(heading, NodeFilter.SHOW_TEXT);
+      var nodes = [];
+      while (walker.nextNode()) nodes.push(walker.currentNode);
+      nodes.forEach(function (node) {
+        if (!han.test(node.data)) return;
+        var parts = Array.from(segmenter.segment(node.data), function (s) { return s.segment; });
+        if (parts.length < 2) return;
+        var fragment = document.createDocumentFragment();
+        parts.forEach(function (part, i) {
+          if (i > 0 && han.test(part.charAt(0)) && han.test(parts[i - 1].slice(-1))) {
+            fragment.appendChild(document.createElement("wbr"));
+          }
+          fragment.appendChild(document.createTextNode(part));
+        });
+        node.parentNode.replaceChild(fragment, node);
+      });
+    });
+  }
+
   document.querySelectorAll("[data-year]").forEach(function (el) {
     el.textContent = String(new Date().getFullYear());
   });
