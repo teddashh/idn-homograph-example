@@ -10,6 +10,8 @@
 
 整個 demo 就是一個靜態的 `index.html`，可切換中文 / English，是 2026 年 4 月寫的 SOC 學習筆記。頁面從一個問題開始（下面兩個連結，哪一個是假的？），接著依據 [BBC 的報導](https://www.bbc.com/news/articles/cly00jnnxypo)，把 Booking.com「訂房劫持」詐騙整理成七步釣魚攻擊鏈，再說明拉丁字母和西里爾字母為什麼看起來一模一樣，最後用一份防禦清單收尾。
 
+範例品牌 Example Bank 是虛構的。它的正牌網域 `examplebank.example` 和仿冒網域（把第一個 a 換成西里爾字母 а，瀏覽器會轉成 `xn--exmplebank-0qi.example`）都在 `.example` 底下。這是 RFC 2606 保留給文件範例使用的頂級網域，任何人都無法註冊。
+
 ## 本機預覽
 
 直接用瀏覽器打開 `index.html` 就能看，或啟動一個簡單的本機伺服器：
@@ -76,14 +78,14 @@ idn-homograph-example/
 
 ## 注意事項
 
-- 假連結本來就不會正常開啟，會看到「無法連上這個網站」的錯誤頁，或被瀏覽器警告擋下。這是**預期行為**，不是 bug。
+- 兩個連結本來就都不會正常開啟。兩個網域都是保留網域，永遠不會解析，所以會看到「無法連上這個網站」的錯誤頁（假連結也可能被瀏覽器警告擋下）。這是**預期行為**，不是 bug，重點在網址列。
 - 如果瀏覽器連顯示的連結文字都變成 `xn--` 形式，表示它的同形字防護正在運作，這本身就是一個很好的教學點。
 - 頁面有 `noindex, nofollow` 的 robots meta 標籤，`vercel.json` 也會送出同樣的 `X-Robots-Tag` 標頭，所以不會被搜尋引擎收錄。`vercel.json` 另外還會送出 `X-Content-Type-Options: nosniff`、`X-Frame-Options: DENY` 與 `Referrer-Policy: no-referrer`。
 - 攻擊鏈裡的 2,000 美元與 580% 這兩個數字，不在所附的 BBC 文章裡。引用前請先確認出處。
 
 ## 自訂
 
-- **範例網域：** 正牌網域和仿冒網域寫死在好幾個地方：頁面標題、頁首、兩個 demo 連結（連結文字與 `href`）、網址列提示、「為什麼肉眼看不出來？」的說明、「攻擊者實際怎麼用」清單、防禦清單和頁尾。在 `index.html` 裡搜尋網域、全部替換之後，再重新計算 Punycode。例如 `python3 -c 'print("exаmple.com".encode("idna"))'`（字串裡的 `а` 是西里爾字母）會印出 `b'xn--exmple-4nf.com'`。
-- **Logo：** 替換 `.brand-mark` 區塊裡的 `<img>`。目前是從外部網址載入 Logo 圖片。
+- **範例品牌與網域：** 虛構品牌名稱（Example Bank）出現在頁面標題、頁首、demo 連結下方的說明和頁尾。正牌網域和仿冒網域則寫死在兩個 demo 連結（連結文字與 `href`）、網址列提示、「為什麼肉眼看不出來？」的說明、「攻擊者實際怎麼用」清單和防禦清單裡。在 `index.html` 裡搜尋 `mplebank`（正牌網域、仿冒網域和它的 `xn--` 形式都找得到），全部替換之後，再重新計算 Punycode。例如 `python3 -c 'print("exаmplebank.example".encode("idna"))'`（字串裡的 `а` 是西里爾字母）會印出 `b'xn--exmplebank-0qi.example'`。兩個網域都請放在 `.example` 或 `.test` 這類保留的頂級網域底下（RFC 2606、RFC 6761）。放在真實頂級網域底下的仿冒網域，任何人都能註冊。
+- **Logo：** `.brand-mark` 區塊裡是一個內嵌的小 SVG（通用的銀行圖示），頁面不會從外部載入任何圖片。要換 Logo，直接替換這段 SVG。
 - **更多相似字母：** 在 `.char-table` 區塊照原本的格式加一列（拉丁字母一格、西里爾字母一格，再加「一模一樣 / Identical」兩格）。
 - **配色：** 修改 `index.html` 最上面 `:root` 裡的 CSS 變數。

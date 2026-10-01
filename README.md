@@ -10,6 +10,8 @@ A single-page, bilingual demo for showing coworkers how an IDN homograph attack 
 
 The whole demo is one static `index.html` with a 中文 / English toggle, written in April 2026 as a SOC study note. It opens with a question (which of these two links is fake?), walks through a seven-step phishing kill chain based on [BBC reporting](https://www.bbc.com/news/articles/cly00jnnxypo) on Booking.com "reservation hijack" scams, explains why the Latin and Cyrillic letters look identical, and ends with a defense checklist.
 
+The example brand, Example Bank, is fictional. Its real domain, `examplebank.example`, and the lookalike (the first a swapped for a Cyrillic а, which the browser turns into `xn--exmplebank-0qi.example`) both sit under `.example`, a top-level domain that RFC 2606 reserves for examples, so nobody can register either one.
+
 ## Preview locally
 
 Open `index.html` in a browser, or serve the folder:
@@ -76,14 +78,14 @@ Suggested flow:
 
 ## Notes
 
-- The fake link is not supposed to load. Expect a "site can't be reached" error or a browser warning. That is expected, not a bug.
+- Neither link is supposed to load. Both domains are reserved and never resolve, so expect a "site can't be reached" error (or a browser warning on the fake one). That is expected, not a bug: the lesson is in the address bar.
 - If the browser shows the `xn--` form even in the link text, its homograph protection is working. That is a good teaching point in itself.
 - The page carries a `noindex, nofollow` robots meta tag, and `vercel.json` sends the same `X-Robots-Tag` header, so the deployment stays out of search results. `vercel.json` also sends `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, and `Referrer-Policy: no-referrer`.
 - The $2,000 and 580% figures in the kill chain are not in the linked BBC article. Check their sources before you quote them.
 
 ## Customize
 
-- **Example domain:** the real and lookalike domains are hard-coded in several places: the page title, the header, both demo links (link text and `href`), the address-bar hint, the "Why can't you spot it?" explanation, the "How attackers weaponize it" list, the checklist, and the footer. Search `index.html` for the domain and replace every occurrence, then recompute the Punycode form. For example, `python3 -c 'print("exаmple.com".encode("idna"))'` (the `а` in that string is Cyrillic) prints `b'xn--exmple-4nf.com'`.
-- **Logo:** replace the `<img>` inside the `.brand-mark` block. It currently loads the logo from an external URL.
+- **Example brand and domains:** the fictional brand name (Example Bank) appears in the page title, the header, the note under the demo links, and the footer. The real and lookalike domains appear in both demo links (link text and `href`), the address-bar hint, the "Why can't you spot it?" explanation, the "How attackers weaponize it" list, and the checklist. Search `index.html` for `mplebank`, which matches the real domain, the lookalike, and its `xn--` form, replace every occurrence, then recompute the Punycode form. For example, `python3 -c 'print("exаmplebank.example".encode("idna"))'` (the `а` in that string is Cyrillic) prints `b'xn--exmplebank-0qi.example'`. Keep both names under a reserved top-level domain such as `.example` or `.test` (RFC 2606, RFC 6761). A lookalike under a real top-level domain is a name that anyone could register.
+- **Logo:** the `.brand-mark` block holds a small inline SVG (a generic bank icon), so the page loads no external images. Replace the SVG to change it.
 - **More lookalike letters:** add rows to the `.char-table` block in the same format (a Latin cell, a Cyrillic cell, then the 一模一樣 / Identical cells).
 - **Colors:** edit the CSS variables in `:root` at the top of `index.html`.

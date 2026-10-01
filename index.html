@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
-<title>IDN Homograph Attack Demo · Formosa USA / Inteplast SOC Team</title>
+<title>IDN Homograph Attack Demo · Example Bank SOC Team</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,900;1,400&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -331,6 +331,16 @@
     font-size: 13px;
   }
 
+  .demo-note {
+    margin: 14px 0 0;
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+
+  .demo-note code {
+    font-size: 12px;
+  }
+
   /* ── Kill Chain ─────────────────────────────── */
   .chain {
     display: flex;
@@ -515,6 +525,7 @@
     border-radius: 4px;
     font-size: 0.9em;
     border: 1px solid var(--border);
+    white-space: nowrap;
   }
 
   ul { list-style: none; }
@@ -625,12 +636,18 @@
   <header>
     <div class="brand">
       <div class="brand-mark">
-        <img src="https://www.somochem.com/Images/Supplier/38/070820240152053830dc3a-571e-415b-8117-e277990ba7e2.png"
-             alt="Formosa Plastics Logo"
-             style="max-width:36px;max-height:36px;object-fit:contain;">
+        <svg viewBox="0 0 32 32" width="32" height="32" role="img" aria-label="Example Bank logo (fictional brand)">
+          <path d="M16 3 29 10H3z" fill="#d6006e"/>
+          <rect x="3" y="11" width="26" height="2.5" rx="1" fill="#1c1c26"/>
+          <rect x="5.5" y="15" width="3" height="9" fill="#1c1c26"/>
+          <rect x="11.5" y="15" width="3" height="9" fill="#1c1c26"/>
+          <rect x="17.5" y="15" width="3" height="9" fill="#1c1c26"/>
+          <rect x="23.5" y="15" width="3" height="9" fill="#1c1c26"/>
+          <rect x="3" y="25" width="26" height="4" rx="1" fill="#1c1c26"/>
+        </svg>
       </div>
       <div class="brand-text">
-        <span class="name">Formosa USA / Inteplast</span>
+        <span class="name">Example Bank</span>
         <span class="sub">SOC Team · Study Note</span>
       </div>
     </div>
@@ -649,13 +666,13 @@
     <h1 class="lang-en">IDN Homograph Attack<br><em>Awareness Demo</em></h1>
 
     <p class="lede lang-zh">
-      本 study note 取材自 BBC 最新報導的 Booking.com 資料外洩案例 —— 攻擊者如何結合
+      本 study note 取材自 BBC 最新報導的 Booking.com 資料外洩案例：攻擊者如何結合
       <strong>credential theft</strong>、<strong>reservation hijacking</strong> 與
-      <strong>IDN homograph spoofing</strong>,打造一條讓使用者幾乎無法察覺的
+      <strong>IDN homograph spoofing</strong>，打造一條讓使用者幾乎無法察覺的
       phishing kill chain。
     </p>
     <p class="lede lang-en">
-      This study note is based on BBC's reporting on the Booking.com data leak — how
+      This study note is based on BBC's reporting on the Booking.com data leak: how
       attackers chain <strong>credential theft</strong>, <strong>reservation hijacking</strong>,
       and <strong>IDN homograph spoofing</strong> into a phishing kill chain that victims
       cannot realistically detect.
@@ -676,30 +693,38 @@
     <div class="demo-label lang-zh">▸ 現場實驗</div>
     <div class="demo-label lang-en">▸ Live Experiment</div>
 
-    <div class="demo-question lang-zh">下面兩個連結,哪一個是假的?</div>
+    <div class="demo-question lang-zh">下面兩個連結，哪一個是假的？</div>
     <div class="demo-question lang-en">Which of these two links is fake?</div>
 
     <div class="links">
       <div class="link-card">
-        <a href="https://fpcusa.com" target="_blank" rel="noopener">https://fpcusa.com</a>
+        <a href="https://examplebank.example" target="_blank" rel="noopener">https://examplebank.example</a>
         <span class="badge badge-safe lang-zh">正牌</span>
         <span class="badge badge-safe lang-en">Real</span>
       </div>
       <div class="link-card">
-        <a href="https://fpcusа.com" target="_blank" rel="noopener">https://fpcusа.com</a>
+        <a href="https://exаmplebank.example" target="_blank" rel="noopener">https://exаmplebank.example</a>
         <span class="badge badge-danger lang-zh">假的</span>
         <span class="badge badge-danger lang-en">Fake</span>
       </div>
     </div>
 
     <div class="demo-hint lang-zh">
-      ⚠️ 點下去看網址列 —— 第二個會變成 <code>xn--fpcus-8ve.com</code>,
-      瀏覽器可能跳出警告。兩個連結顯示的文字在肉眼上幾乎無法分辨。
+      ⚠️ 點下去看網址列：第二個會變成 <code>xn--exmplebank-0qi.example</code>，瀏覽器可能跳出警告。兩個連結顯示的文字在肉眼上幾乎無法分辨。
     </div>
     <div class="demo-hint lang-en">
-      ⚠️ Click and watch the address bar — the second becomes <code>xn--fpcus-8ve.com</code>,
+      ⚠️ Click and watch the address bar: the second becomes <code>xn--exmplebank-0qi.example</code>,
       and your browser may warn you. To the human eye, the two links look identical.
     </div>
+    <p class="demo-note lang-zh">
+      Example Bank 是虛構品牌。兩個網址都在 <code>.example</code> 底下，這是 RFC 2606
+      保留給文件範例使用的頂級網域，任何人都無法註冊，所以兩個連結都不會開到真的網站。
+    </p>
+    <p class="demo-note lang-en">
+      Example Bank is a fictional brand. Both addresses sit under <code>.example</code>, a
+      top-level domain that RFC 2606 reserves for examples, so nobody can register them and
+      neither link opens a real site.
+    </p>
   </div>
 
   <!-- ── Kill Chain ─────────────────────────────── -->
@@ -708,9 +733,8 @@
     <h2 class="lang-en">The Full Attack Kill Chain</h2>
 
     <p class="lang-zh">
-      很多人以為「使用者資料外洩」只是終端使用者自己不小心 —— 但實際上,
-      在 Booking.com 這種案例裡,<strong>受害者的資料是先從平台端被偷走的</strong>。
-      整條 kill chain 大致長這樣:
+      很多人以為「使用者資料外洩」只是終端使用者自己不小心，但實際上，在 Booking.com
+      這種案例裡，<strong>受害者的資料是先從平台端被偷走的</strong>。整條 kill chain 大致長這樣：
     </p>
     <p class="lang-en">
       Most people assume user data leaks come from careless end-users. But in cases like
@@ -727,15 +751,15 @@
           <h3 class="lang-zh">攻擊 Booking.com 的飯店合作夥伴</h3>
           <h3 class="lang-en">Target Booking.com's hotel partners</h3>
           <p class="lang-zh">
-            攻擊者不直接打 Booking.com 主系統(太硬),而是鎖定它的
-            <strong>partner hotels</strong>。透過 <strong>spear phishing email</strong>
-            (偽裝成 Booking.com 官方通知、客訴、訂單爭議)誘使飯店員工點擊連結,
-            在飯店內部端點植入 <strong>info-stealer malware</strong>(例如 Vidar、RedLine、Lumma)。
+            攻擊者不直接打 Booking.com 主系統（太硬），而是鎖定它的
+            <strong>partner hotels</strong>。透過 <strong>spear phishing email</strong>（偽裝成 Booking.com
+            官方通知、客訴、訂單爭議）誘使飯店員工點擊連結，在飯店內部端點植入
+            <strong>info-stealer malware</strong>（例如 Vidar、RedLine、Lumma）。
           </p>
           <p class="lang-en">
             Attackers don't hit Booking.com's core systems (too hardened). They target
-            <strong>partner hotels</strong> with <strong>spear phishing emails</strong> —
-            posing as Booking.com support, guest complaints, or reservation disputes — to
+            <strong>partner hotels</strong> with <strong>spear phishing emails</strong>
+            (posing as Booking.com support, guest complaints, or reservation disputes) to
             drop <strong>info-stealer malware</strong> (Vidar, RedLine, Lumma) onto hotel endpoints.
           </p>
         </div>
@@ -749,15 +773,14 @@
           <h3 class="lang-zh">竊取 Extranet 後台登入憑證</h3>
           <h3 class="lang-en">Steal Extranet admin credentials</h3>
           <p class="lang-zh">
-            Info-stealer 會抓取瀏覽器儲存的 <strong>credentials</strong>、
-            <strong>session cookies</strong>、<strong>authentication tokens</strong>。
-            攻擊者拿到飯店的 Booking.com <strong>Extranet admin panel</strong>
-            登入權限 —— 這是飯店管理訂房、聯絡房客、查看付款資料的後台。
+            Info-stealer 會抓取瀏覽器儲存的
+            <strong>credentials</strong>、<strong>session cookies</strong>、<strong>authentication tokens</strong>。攻擊者拿到飯店的
+            Booking.com <strong>Extranet admin panel</strong> 登入權限，這是飯店管理訂房、聯絡房客、查看付款資料的後台。
           </p>
           <p class="lang-en">
             Info-stealers exfiltrate browser-stored <strong>credentials</strong>,
             <strong>session cookies</strong>, and <strong>authentication tokens</strong>.
-            Attackers gain access to the hotel's <strong>Booking.com Extranet admin panel</strong> —
+            Attackers gain access to the hotel's <strong>Booking.com Extranet admin panel</strong>,
             where reservations, guest messaging, and payment data live.
           </p>
         </div>
@@ -768,12 +791,12 @@
         <div class="chain-num">03</div>
         <div class="chain-body">
           <div class="chain-tag">Dark Web Monetization</div>
-          <h3 class="lang-zh">在暗網掛單,尋找買家或合作夥伴</h3>
+          <h3 class="lang-zh">在暗網掛單，尋找買家或合作夥伴</h3>
           <h3 class="lang-en">Monetize on dark-web forums</h3>
           <p class="lang-zh">
-            BBC 報導指出,攻擊者在 <strong>dark web forums</strong> 張貼廣告,
-            願意花最高 <strong>$2,000 USD</strong> 收購飯店的 Extranet credentials。
-            這形成一個 <strong>Initial Access Broker(IAB)</strong> 的交易生態。
+            BBC 報導指出，攻擊者在 <strong>dark web forums</strong> 張貼廣告，願意花最高
+            <strong>$2,000 USD</strong> 收購飯店的 Extranet credentials。這形成一個
+            <strong>Initial Access Broker（IAB）</strong>的交易生態。
           </p>
           <p class="lang-en">
             BBC reported that threat actors post ads on <strong>dark web forums</strong>,
@@ -791,15 +814,13 @@
           <h3 class="lang-zh">從後台取得使用者 PII 與訂房資料</h3>
           <h3 class="lang-en">Exfiltrate guest PII and reservation data</h3>
           <p class="lang-zh">
-            登入 Extranet 後,攻擊者可以看到所有房客的
-            <strong>Personally Identifiable Information (PII)</strong> ——
-            姓名、email、電話、入住 / 退房日期、訂房編號、部分信用卡資料。
-            這裡是整條鏈中最關鍵的一步:<strong>user 的資料在這個時間點就已經外洩了</strong>,
-            使用者本人還完全不知道。
+            登入 Extranet 後，攻擊者可以看到所有房客的
+            <strong>Personally Identifiable Information（PII）</strong>：姓名、email、電話、入住 / 退房日期、訂房編號、部分信用卡資料。這裡是整條鏈中最關鍵的一步：<strong>user
+            的資料在這個時間點就已經外洩了</strong>，使用者本人還完全不知道。
           </p>
           <p class="lang-en">
             Once inside the Extranet, attackers harvest guest
-            <strong>Personally Identifiable Information (PII)</strong> — names, emails, phone
+            <strong>Personally Identifiable Information (PII)</strong>: names, emails, phone
             numbers, check-in/out dates, booking IDs, partial card data. This is the critical
             pivot: <strong>user data is already compromised at this stage</strong>, and the
             victim has no idea.
@@ -812,19 +833,18 @@
         <div class="chain-num">05</div>
         <div class="chain-body">
           <div class="chain-tag">Social Engineering</div>
-          <h3 class="lang-zh">偽裝飯店,發送高擬真釣魚訊息(Reservation Hijacking)</h3>
+          <h3 class="lang-zh">偽裝飯店，發送高擬真釣魚訊息（Reservation Hijacking）</h3>
           <h3 class="lang-en">Impersonate the hotel · Reservation Hijacking</h3>
           <p class="lang-zh">
-            攻擊者用被盜的 Extranet 帳號,<strong>透過 Booking.com 官方訊息系統</strong>
-            或 WhatsApp / SMS 聯絡房客,訊息裡精準寫出正確的飯店名、日期、訂房編號。
-            受害者正在等飯店聯絡、訊息又 100% 合法 —— 這就是 Norton 所稱的
-            <strong>"Reservation Hijacking"</strong>,比傳統 phishing 威脅等級高出數倍。
+            攻擊者用被盜的 Extranet 帳號，<strong>透過 Booking.com 官方訊息系統</strong>或
+            WhatsApp / SMS 聯絡房客，訊息裡精準寫出正確的飯店名、日期、訂房編號。受害者正在等飯店聯絡、訊息又
+            100% 合法，這就是 Norton 所稱的<strong>「Reservation Hijacking」</strong>，比傳統 phishing 威脅等級高出數倍。
           </p>
           <p class="lang-en">
             Using stolen Extranet accounts, attackers message guests <strong>through
             Booking.com's official messaging system</strong> or WhatsApp/SMS, referencing
             real hotel names, dates, and booking IDs. The victim is expecting this message
-            and it's 100% legitimate-looking — this is what Norton calls
+            and it's 100% legitimate-looking. This is what Norton calls
             <strong>"Reservation Hijacking"</strong>, orders of magnitude more dangerous
             than generic phishing.
           </p>
@@ -839,16 +859,15 @@
           <h3 class="lang-zh">訊息中夾帶同形異義字假連結</h3>
           <h3 class="lang-en">Embed an IDN homograph fake link</h3>
           <p class="lang-zh">
-            訊息裡的付款連結用 <strong>IDN homograph spoofing</strong> 偽裝 ——
-            例如 <code>booking.com</code> 裡的 o 被西里爾 о 取代,
-            實際會導向 <code>xn--bking-qmb.com</code>。
-            受害者肉眼看到的是熟悉的網址,點下去卻進入
-            <strong>attacker-controlled fake payment page</strong>,頁面視覺 100% 複製官網。
+            訊息裡的付款連結用 <strong>IDN homograph spoofing</strong> 偽裝，例如
+            <code>booking.com</code> 裡的第一個 o 被西里爾字母 о 取代，實際會導向
+            <code>xn--boking-wqf.com</code>。受害者肉眼看到的是熟悉的網址，點下去卻進入
+            <strong>attacker-controlled fake payment page</strong>，頁面視覺 100% 複製官網。
           </p>
           <p class="lang-en">
-            The payment link in the message uses <strong>IDN homograph spoofing</strong> —
-            e.g. the o in <code>booking.com</code> replaced with Cyrillic о, actually resolving
-            to <code>xn--bking-qmb.com</code>. The victim sees a familiar URL, but lands on
+            The payment link in the message uses <strong>IDN homograph spoofing</strong>,
+            e.g. the first o in <code>booking.com</code> replaced with Cyrillic о, actually resolving
+            to <code>xn--boking-wqf.com</code>. The victim sees a familiar URL, but lands on
             an <strong>attacker-controlled fake payment page</strong> with pixel-perfect branding.
           </p>
         </div>
@@ -862,10 +881,10 @@
           <h3 class="lang-zh">取得信用卡 / 誘導銀行轉帳</h3>
           <h3 class="lang-en">Harvest cards · Trigger wire transfers</h3>
           <p class="lang-zh">
-            在假的付款頁面,受害者輸入信用卡資料被
-            <strong>card skimming</strong> 擷取;或被誘導進行
-            <strong>wire transfer fraud</strong>。資金一旦離開帳戶,追回機率極低。
-            澳洲 ACCC 資料顯示此類攻擊年成長 <strong>580%</strong>。
+            在假的付款頁面，受害者輸入信用卡資料被
+            <strong>card skimming</strong> 擷取；或被誘導進行
+            <strong>wire transfer fraud</strong>。資金一旦離開帳戶，追回機率極低。澳洲 ACCC
+            資料顯示此類攻擊年成長 <strong>580%</strong>。
           </p>
           <p class="lang-en">
             On the fake payment page, card data is captured via <strong>card skimming</strong>
@@ -881,18 +900,15 @@
       <div class="callout-label lang-zh">💡 關鍵洞察</div>
       <div class="callout-label lang-en">💡 Key Insight</div>
       <p class="lang-zh">
-        這條 kill chain 的可怕之處:前 5 步使用者<strong>完全無感</strong>。
-        當受害者看到釣魚訊息時,他們的資料已經在攻擊者手上好幾天甚至好幾週了。
-        訊息來自真的 booking.com、內容 100% 正確、連結用 homograph 偽裝 ——
-        這三個條件同時成立,<strong>單純靠使用者警覺幾乎不可能防禦</strong>。
-        必須靠 <strong>defense-in-depth</strong>:平台端的 credential hardening、
-        MFA、DMARC、DNS 監控、員工訓練、IDN 警告。
+        這條 kill chain 的可怕之處：前 5 步使用者<strong>完全無感</strong>。當受害者看到釣魚訊息時，他們的資料已經在攻擊者手上好幾天甚至好幾週了。訊息來自真的
+        booking.com、內容 100% 正確、連結用 homograph 偽裝，這三個條件同時成立，<strong>單純靠使用者警覺幾乎不可能防禦</strong>。必須靠
+        <strong>defense-in-depth</strong>：平台端的 credential hardening、MFA、DMARC、DNS 監控、員工訓練、IDN 警告。
       </p>
       <p class="lang-en">
-        The terrifying part of this kill chain: steps 1–5 are <strong>invisible to the user</strong>.
+        The terrifying part of this kill chain: steps 1 to 5 are <strong>invisible to the user</strong>.
         By the time the phishing message arrives, their data has been in attacker hands for
         days or weeks. The message comes from real booking.com, the content is 100% accurate,
-        the link is homograph-spoofed — <strong>user vigilance alone cannot defend against this</strong>.
+        and the link is homograph-spoofed. When all three line up, <strong>user vigilance alone cannot defend against this</strong>.
         <strong>Defense-in-depth</strong> is required: platform-side credential hardening,
         MFA, DMARC, DNS monitoring, security awareness training, and IDN warning systems.
       </p>
@@ -901,34 +917,31 @@
 
   <!-- ── Why ─────────────────────────────── -->
   <section>
-    <h2 class="lang-zh">為什麼肉眼看不出來?</h2>
+    <h2 class="lang-zh">為什麼肉眼看不出來？</h2>
     <h2 class="lang-en">Why can't you spot it?</h2>
 
     <p class="lang-zh">
-      第二個連結的 <strong>a</strong> 不是英文字母的 a(Unicode <code>U+0061</code>),
-      而是<strong>西里爾字母 (Cyrillic script)</strong> 的 а(<code>U+0430</code>)。
-      兩個 <strong>glyph(字形)</strong>在螢幕上一模一樣,但在電腦眼中是完全不同的
-      <strong>code point(碼位)</strong>。
+      第二個連結裡的第一個 <strong>a</strong> 不是英文字母的 a（Unicode <code>U+0061</code>），而是<strong>西里爾字母（Cyrillic
+      script）</strong>的 а（<code>U+0430</code>）。兩個 <strong>glyph（字形）</strong>在螢幕上一模一樣，但在電腦眼中是完全不同的
+      <strong>code point（碼位）</strong>。
     </p>
     <p class="lang-en">
-      The <strong>a</strong> in the second link isn't the Latin letter a (U+0061) —
-      it's the <strong>Cyrillic</strong> letter а (U+0430). They render identically on screen
+      The first <strong>a</strong> in the second link isn't the Latin letter a (U+0061).
+      It's the <strong>Cyrillic</strong> letter а (U+0430). They render identically on screen
       but are entirely different characters to a computer.
     </p>
 
     <p class="lang-zh">
-      瀏覽器依照 <strong>IDN (Internationalized Domain Name)</strong> 標準
-      (<strong>RFC 3492 · Punycode</strong>)把含有非 ASCII 字元的網域轉成
-      <code>xn--</code> 開頭的 <strong>ACE (ASCII Compatible Encoding)</strong> 形式。
-      所以實際連出去的網址是 <code>xn--fpcus-8ve.com</code>,而不是 <code>fpcusa.com</code>。
-      這種攻擊手法稱為 <strong>IDN Homograph Attack(同形異義字攻擊)</strong>,
-      也被歸類為 <strong>homoglyph spoofing</strong> 的一種。
+      瀏覽器依照 <strong>IDN（Internationalized Domain Name）</strong>標準（<strong>RFC 3492 · Punycode</strong>）把含有非 ASCII 字元的網域轉成
+      <code>xn--</code> 開頭的 <strong>ACE（ASCII Compatible Encoding）</strong>形式。所以實際連出去的網址是
+      <code>xn--exmplebank-0qi.example</code>，而不是 <code>examplebank.example</code>。這種攻擊手法稱為
+      <strong>IDN Homograph Attack（同形異義字攻擊）</strong>，也被歸類為 <strong>homoglyph spoofing</strong> 的一種。
     </p>
     <p class="lang-en">
-      Behind the scenes, browsers convert non-Latin domains into <strong>Punycode</strong> —
-      an ASCII encoding. So you're actually connecting to <code>xn--fpcus-8ve.com</code>,
-      not <code>fpcusa.com</code>. This technique is called an
-      <strong>IDN Homograph Attack</strong>.
+      Behind the scenes, browsers convert domain names that contain non-ASCII characters into
+      <strong>Punycode</strong>, an ASCII encoding. So you're actually connecting to
+      <code>xn--exmplebank-0qi.example</code>, not <code>examplebank.example</code>. This
+      technique is called an <strong>IDN Homograph Attack</strong>.
     </p>
 
     <div class="char-table">
@@ -967,14 +980,14 @@
     <h2 class="lang-en">How attackers weaponize it</h2>
 
     <ul class="lang-zh">
-      <li>透過 <strong>phishing email</strong> 或 <strong>smishing (SMS phishing)</strong>、<strong>WhatsApp phishing</strong> 發送連結,顯示文字是 <code>fpcusa.com</code></li>
-      <li>受害者肉眼無法辨識 <strong>homograph spoofing</strong>,點擊連結</li>
-      <li>導向 <strong>attacker-controlled fake login page</strong>(HTML / CSS / 商標 100% clone)</li>
+      <li>透過 <strong>phishing email</strong> 或 <strong>smishing（SMS phishing）</strong>、<strong>WhatsApp phishing</strong> 發送連結，顯示文字看起來就是 <code>examplebank.example</code></li>
+      <li>受害者肉眼無法辨識 <strong>homograph spoofing</strong>，點擊連結</li>
+      <li>導向 <strong>attacker-controlled fake login page</strong>（HTML / CSS / 商標 100% clone）</li>
       <li>輸入 credentials 被 <strong>credential harvesting</strong> 擷取 → 攻擊者登入真網站</li>
-      <li>若結合企業 VPN、SSO、OA、ERP、procurement portal → 升級為 <strong>account takeover (ATO)</strong>、<strong>supply chain compromise</strong>,引發嚴重 data breach</li>
+      <li>若結合企業 VPN、SSO、OA、ERP、procurement portal → 升級為 <strong>account takeover（ATO）</strong>、<strong>supply chain compromise</strong>，引發嚴重 data breach</li>
     </ul>
     <ul class="lang-en">
-      <li>Phishing email or WhatsApp with link text <code>fpcusa.com</code></li>
+      <li>Phishing email or WhatsApp with link text that reads <code>examplebank.example</code></li>
       <li>Victim cannot distinguish the difference and clicks</li>
       <li>Lands on a pixel-perfect fake login page (HTML / CSS / Logo all copied)</li>
       <li>Enters credentials → stolen → attacker logs into the real site</li>
@@ -982,11 +995,10 @@
     </ul>
 
     <p class="lang-zh">
-      這也是 Booking.com 近幾年反覆被攻擊的原因 —— 使用者本來就在等飯店聯絡,
-      訊息裡又有正確的訂房資料,戒心降到最低。
+      這也是 Booking.com 近幾年反覆被攻擊的原因：使用者本來就在等飯店聯絡，訊息裡又有正確的訂房資料，戒心降到最低。
     </p>
     <p class="lang-en">
-      This is the same pattern behind repeated Booking.com scams — victims are expecting
+      This is the same pattern behind repeated Booking.com scams: victims are expecting
       hotel messages, the message contains real reservation details, and their guard is down.
     </p>
   </section>
@@ -997,20 +1009,20 @@
     <h2 class="lang-en">How to protect yourself</h2>
 
     <ul class="lang-zh">
-      <li><strong>不要點訊息裡的連結去登入或付款</strong> —— 自己打開 App、手動輸入網址、或用 bookmark</li>
-      <li><strong>檢查 URL 時看最右邊的 root domain</strong> —— <code>secure-fpcusa.com</code> 不是 fpcusa.com</li>
-      <li><strong>任何要求 wire transfer(銀行轉帳)的訊息幾乎都是詐騙</strong></li>
-      <li><strong>啟用 Multi-Factor Authentication (MFA)</strong> —— 最好用 FIDO2 / passkey,可以抵禦 credential phishing</li>
-      <li><strong>保持瀏覽器更新</strong> —— Chrome / Edge / Firefox 都有內建 <strong>IDN display policy</strong> 偵測</li>
-      <li><strong>公司 (Enterprise) 層級</strong>:<strong>defensive domain registration</strong>、<strong>DMARC / SPF / DKIM</strong> email authentication、<strong>DNS monitoring</strong>、<strong>threat intelligence feeds</strong>、定期 <strong>phishing simulation</strong> 訓練</li>
-      <li><strong>SOC 偵測</strong>:監控 <strong>newly registered domains (NRDs)</strong>、異常 <strong>Punycode / IDN</strong> 網域、用 <strong>DNSTwist</strong> 掃描針對自家 brand 的 typosquatting 變體</li>
+      <li><strong>不要點訊息裡的連結去登入或付款</strong>：自己打開 App、手動輸入網址、或用 bookmark</li>
+      <li><strong>檢查 URL 時看最右邊的 root domain</strong>：<code>secure-examplebank.example</code> 不是 examplebank.example</li>
+      <li><strong>任何要求 wire transfer（銀行轉帳）的訊息幾乎都是詐騙</strong></li>
+      <li><strong>啟用 Multi-Factor Authentication（MFA）</strong>：最好用 FIDO2 / passkey，可以抵禦 credential phishing</li>
+      <li><strong>保持瀏覽器更新</strong>：Chrome / Edge / Firefox 都有內建 <strong>IDN display policy</strong> 偵測</li>
+      <li><strong>公司（Enterprise）層級</strong>：<strong>defensive domain registration</strong>、<strong>DMARC / SPF / DKIM</strong> email authentication、<strong>DNS monitoring</strong>、<strong>threat intelligence feeds</strong>、定期 <strong>phishing simulation</strong> 訓練</li>
+      <li><strong>SOC 偵測</strong>：監控 <strong>newly registered domains（NRDs）</strong>、異常 <strong>Punycode / IDN</strong> 網域、用 <strong>DNSTwist</strong> 掃描針對自家 brand 的 typosquatting 變體</li>
     </ul>
     <ul class="lang-en">
-      <li><strong>Don't click links in messages to log in or pay</strong> — open the app, type the URL, or use bookmarks</li>
-      <li><strong>Look at the rightmost root domain</strong> — <code>secure-fpcusa.com</code> is NOT fpcusa.com</li>
+      <li><strong>Don't click links in messages to log in or pay</strong>: open the app, type the URL, or use bookmarks</li>
+      <li><strong>Look at the rightmost root domain</strong>: <code>secure-examplebank.example</code> is NOT examplebank.example</li>
       <li><strong>Any request for a wire transfer is almost always a scam</strong></li>
-      <li><strong>Enable multi-factor authentication (MFA)</strong> — stolen passwords alone won't get in</li>
-      <li><strong>Keep your browser updated</strong> — Chrome / Edge / Firefox have built-in homograph detection</li>
+      <li><strong>Enable multi-factor authentication (MFA)</strong>: stolen passwords alone won't get in</li>
+      <li><strong>Keep your browser updated</strong>: Chrome / Edge / Firefox have built-in homograph detection</li>
       <li><strong>At the org level: defensive registration + DMARC + regular training</strong></li>
     </ul>
   </section>
@@ -1018,8 +1030,8 @@
   <!-- ── Footer ─────────────────────────────── -->
   <footer>
     <div>
-      <span class="lang-zh">Formosa USA / Inteplast SOC Team · Internal Security Awareness</span>
-      <span class="lang-en">Formosa USA / Inteplast SOC Team · Internal Security Awareness</span>
+      <span class="lang-zh">Example Bank（虛構品牌）SOC 團隊 · 內部資安宣導</span>
+      <span class="lang-en">Example Bank (fictional brand) SOC Team · Internal Security Awareness</span>
     </div>
     <div class="meta">Study Note · 04 / 16 / 2026</div>
   </footer>
