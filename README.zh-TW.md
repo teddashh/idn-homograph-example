@@ -62,6 +62,7 @@ idn-homograph-example/
 ├── vercel.json                 Vercel 設定（安全標頭、clean URLs）
 ├── site/                       GitHub Pages 專案介紹頁，由 site/page.json 產生
 ├── .github/workflows/pages.yml 把 site/ 部署到 GitHub Pages
+├── LICENSE                     MIT 授權條款
 ├── README.md                   英文說明
 └── README.zh-TW.md             這份文件
 ```
@@ -89,3 +90,7 @@ idn-homograph-example/
 - **Logo：** `.brand-mark` 區塊裡是一個內嵌的小 SVG（通用的銀行圖示），頁面不會從外部載入任何圖片。要換 Logo，直接替換這段 SVG。
 - **更多相似字母：** 在 `.char-table` 區塊照原本的格式加一列（拉丁字母一格、西里爾字母一格，再加「一模一樣 / Identical」兩格）。
 - **配色：** 修改 `index.html` 最上面 `:root` 裡的 CSS 變數。
+
+## 授權
+
+MIT，詳見 LICENSE。
