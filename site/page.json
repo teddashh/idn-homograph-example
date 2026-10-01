@@ -10,8 +10,16 @@
     "kicker": "#b42318"
   },
   "default_branch": "main",
-  "verified": "2026-09-30",
+  "verified": "2026-10-01",
   "language": "HTML",
+  "license": {
+    "spdx": "MIT",
+    "label": {
+      "en": "MIT License",
+      "zh": "MIT 授權"
+    },
+    "href": "LICENSE"
+  },
   "title": {
     "en": "An IDN homograph attack awareness demo",
     "zh": "IDN 同形異義字攻擊的教學 demo"
@@ -372,8 +380,8 @@
       "zh": "目前的樣子。"
     },
     "intro": {
-      "en": "Written in April 2026 as a study note for showing coworkers the attack. Small and finished, and the Vercel copy is still live.",
-      "zh": "2026 年 4 月寫給同事看的學習筆記。規模小、內容已完成，Vercel 上的版本仍在線上。"
+      "en": "Written in April 2026 as a study note for showing coworkers the attack, and changed in October 2026 to use a fictional bank. Small and finished, and the Vercel copy is still live.",
+      "zh": "2026 年 4 月寫給同事看的學習筆記，2026 年 10 月改用虛構的銀行當範例。規模小、內容已完成，Vercel 上的版本仍在線上。"
     },
     "works": [
       {
@@ -405,10 +413,6 @@
       {
         "en": "The $2,000 and 580% figures in the kill chain are not in the linked BBC article and were not verified here",
         "zh": "攻擊鏈裡的 2,000 美元與 580% 這兩個數字，不在所附的 BBC 文章裡，這裡也沒有查證"
-      },
-      {
-        "en": "No license file, so reuse terms are not stated",
-        "zh": "沒有授權檔，重複使用的條件沒有寫明"
       }
     ]
   },
@@ -446,17 +450,14 @@
         "en": "License",
         "zh": "授權"
       },
-      "value": {
-        "en": "Not specified",
-        "zh": "未指定"
-      }
+      "value": "MIT"
     },
     {
       "label": {
         "en": "Verified",
         "zh": "查核日期"
       },
-      "value": "2026-09-30"
+      "value": "2026-10-01"
     }
   ],
   "links": [
