@@ -644,7 +644,7 @@
           },
           "note": {
             "en": "IDNA adds the prefix xn-- to that label only, giving <code>xn--exmplebank-0qi.example</code>.",
-            "zh": "IDNA 只在這段前面加 xn--，主機名稱就是 <code>xn--exmplebank-0qi.example</code>。"
+            "zh": "IDNA 只在這段前面加 xn--，變成 <code>xn--exmplebank-0qi.example</code> 這個主機名稱。"
           },
           "tone": "info",
           "icon": "globe"
