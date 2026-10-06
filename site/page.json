@@ -479,15 +479,15 @@
   "flows": [
     {
       "id": "lookalike",
-      "after": "how",
       "heading": {
-        "en": "Why the letters match",
-        "zh": "為什麼字母看起來一樣"
+        "en": "They only look the same",
+        "zh": "長得一樣，不是同一個字"
       },
       "intro": {
-        "en": "The fake link swaps one letter for a Cyrillic lookalike. The demo's table lists five pairs.",
-        "zh": "假連結把一個字母換成西里爾字母的形近字。Demo 的對照表列出五組。"
+        "en": "The fake link swaps one letter for a Cyrillic lookalike. The table lists five pairs.",
+        "zh": "假連結把一個字母換成西里爾字母的形近字。對照表列了五組。"
       },
+      "after": "how",
       "spec": {
         "columns": [
           [
@@ -506,48 +506,48 @@
       "steps": [
         {
           "title": {
-            "en": "Latin letter",
-            "zh": "拉丁字母"
+            "en": "Latin a",
+            "zh": "拉丁的 a"
           },
           "note": {
-            "en": "The real link uses U+0061 for the first a in examplebank.example.",
-            "zh": "正牌連結 examplebank.example 的第一個 a 是 U+0061。"
+            "en": "examplebank.example uses U+0061 for the first a.",
+            "zh": "examplebank.example 裡第一個 a，是 U+0061。"
           },
           "tone": "neutral",
           "icon": "doc"
         },
         {
           "title": {
-            "en": "Cyrillic letter",
-            "zh": "西里爾字母"
+            "en": "Cyrillic a",
+            "zh": "西里爾的 a"
           },
           "note": {
-            "en": "The fake href writes U+0430 in that same spot, and the page does not encode it first.",
-            "zh": "假連結的 href 在同一個位置直接寫 U+0430，頁面沒有先把它編碼。"
+            "en": "The fake href writes U+0430 in that same spot. The page does not encode it first.",
+            "zh": "假連結的 href 在同一個位置直接寫 U+0430。頁面沒有先編碼。"
           },
           "tone": "warn",
           "icon": "mask"
         },
         {
           "title": {
-            "en": "Same glyph",
-            "zh": "字形相同"
+            "en": "Same on screen",
+            "zh": "螢幕上看一樣"
           },
           "note": {
-            "en": "The table marks a/а, c/с, e/е, o/о, and p/р as identical on screen.",
-            "zh": "對照表把 a/а、c/с、e/е、o/о、p/р 都標成螢幕上看起來一樣。"
+            "en": "The table calls the pairs for a, c, e, o, and p identical.",
+            "zh": "對照表把 a、c、e、o、p 這五組都標成一模一樣。"
           },
           "tone": "accent",
           "icon": "eye"
         },
         {
           "title": {
-            "en": "Two names",
-            "zh": "兩個名稱"
+            "en": "Two hosts",
+            "zh": "兩個主機名稱"
           },
           "note": {
-            "en": "The labels differ by one code point, so they are different names under .example.",
-            "zh": "兩個標籤差一個碼位，所以是 .example 底下兩個不同的名稱。"
+            "en": "One code point of difference means two labels under .example.",
+            "zh": "差一個碼位，就是 .example 底下兩個不同的名稱。"
           },
           "tone": "info",
           "icon": "route"
@@ -555,34 +555,34 @@
       ],
       "ticks": [
         {
-          "en": "U+0061 versus U+0430",
-          "zh": "U+0061 對上 U+0430"
+          "en": "U+0061 beside U+0430",
+          "zh": "U+0061 旁邊是 U+0430"
         },
         {
-          "en": "five pairs look alike",
-          "zh": "五組看起來相同"
+          "en": "five pairs in the table",
+          "zh": "表上一共五組"
         },
         {
-          "en": "two different labels",
-          "zh": "兩個不同標籤"
+          "en": "two labels, not one",
+          "zh": "是兩個名稱"
         }
       ],
       "caption": {
-        "en": "The real link's a is Latin U+0061. The fake link's first a is Cyrillic U+0430, written directly in the href. The demo's table says those glyphs look identical, and it says the same for c and с (U+0441), e and е (U+0435), o and о (U+043E), and p and р (U+0440). Different code points mean two different labels.",
-        "zh": "正牌連結的 a 是拉丁字母 U+0061。假連結的第一個 a 是西里爾字母 U+0430，直接寫在 href 裡。Demo 的對照表說這兩個字形看起來一樣，c 和 с（U+0441）、e 和 е（U+0435）、o 和 о（U+043E）、p 和 р（U+0440）也一樣。碼位不同，就是兩個不同的標籤。"
+        "en": "Different code points are different names, even when they look identical.",
+        "zh": "碼位不同就是不同的名稱，就算看起來一樣。"
       }
     },
     {
       "id": "punycode",
-      "after": "how",
       "heading": {
-        "en": "How the name becomes xn--",
-        "zh": "名稱怎麼變成 xn--"
+        "en": "Browsers write xn--",
+        "zh": "瀏覽器才寫 xn--"
       },
       "intro": {
-        "en": "The page does not compute this. The browser converts the label with Punycode, RFC 3492, when it uses the name.",
-        "zh": "頁面自己不算這段。瀏覽器要用這個名稱時，才用 Punycode（RFC 3492）轉換標籤。"
+        "en": "This page does not encode the name. The browser turns it into Punycode (RFC 3492) before sending the label.",
+        "zh": "頁面自己不會編碼。送出前，瀏覽器才把它轉成 Punycode（RFC 3492）。"
       },
+      "after": "how",
       "spec": {
         "columns": [
           [
@@ -603,48 +603,48 @@
       "steps": [
         {
           "title": {
-            "en": "Unicode label",
-            "zh": "原文字標籤"
+            "en": "Raw label",
+            "zh": "原本的標籤"
           },
           "note": {
-            "en": "The fake host is ex, then U+0430, then mplebank, and the suffix .example stays a separate label.",
-            "zh": "假的主機名稱是 ex、U+0430、mplebank，後綴 .example 是另一個標籤。"
+            "en": "The fake label is ex, then U+0430, then mplebank. The suffix .example is a separate label.",
+            "zh": "假標籤是 ex、接著 U+0430、再來 mplebank。後綴 .example 是另一段。"
           },
           "tone": "neutral",
           "icon": "code"
         },
         {
           "title": {
-            "en": "Keep ASCII",
-            "zh": "留下 ASCII"
+            "en": "Copy ASCII",
+            "zh": "先留 ASCII"
           },
           "note": {
-            "en": "Punycode copies the ASCII letters in order and leaves that Cyrillic letter out of this part, which produces exmplebank.",
-            "zh": "Punycode 依序抄下 ASCII 字母，這一段不含那個西里爾字母，所以得到 exmplebank。"
+            "en": "Punycode copies the ASCII letters in order and gets exmplebank.",
+            "zh": "Punycode 依序抄下 ASCII 字母，得到 exmplebank。"
           },
           "tone": "neutral",
           "icon": "terminal"
         },
         {
           "title": {
-            "en": "Record gap",
-            "zh": "記下缺字"
+            "en": "Record the gap",
+            "zh": "記下缺的字"
           },
           "note": {
-            "en": "After a hyphen, the rest of the label records the removed character and its position, which is the suffix 0qi for this name.",
-            "zh": "連字號後面的部分記下被拿掉的字和它的位置，這個名稱的後綴是 0qi。"
+            "en": "After a hyphen, the label records the missing letter and its place. Here that suffix is 0qi.",
+            "zh": "連字號後面記下被拿掉的字和位置。這個名稱的後綴是 0qi。"
           },
           "tone": "accent",
           "icon": "gear"
         },
         {
           "title": {
-            "en": "Add prefix",
-            "zh": "加上前綴"
+            "en": "Add xn--",
+            "zh": "補上 xn--"
           },
           "note": {
-            "en": "IDNA adds the ACE prefix xn-- to that label only, so the host is xn--exmplebank-0qi.example.",
-            "zh": "IDNA 只在該標籤前加上 ACE 前綴 xn--，所以主機名稱是 xn--exmplebank-0qi.example。"
+            "en": "IDNA adds the prefix xn-- to that label only, giving <code>xn--exmplebank-0qi.example</code>.",
+            "zh": "IDNA 只在這段前面加 xn--，主機名稱就是 <code>xn--exmplebank-0qi.example</code>。"
           },
           "tone": "info",
           "icon": "globe"
@@ -652,34 +652,34 @@
       ],
       "ticks": [
         {
-          "en": "ASCII part is exmplebank",
-          "zh": "ASCII 部分是 exmplebank"
+          "en": "exmplebank is the ASCII part",
+          "zh": "exmplebank 是 ASCII 那段"
         },
         {
-          "en": "suffix for this label is 0qi",
-          "zh": "這個標籤的後綴是 0qi"
+          "en": "the gap code is 0qi",
+          "zh": "缺字的碼是 0qi"
         },
         {
-          "en": "host starts with xn--",
-          "zh": "主機名稱以 xn-- 開頭"
+          "en": "only that label gets xn--",
+          "zh": "只有這段加上 xn--"
         }
       ],
       "caption": {
-        "en": "The browser does not send the Cyrillic letter to DNS as that character. It keeps the ASCII letters exmplebank, encodes the missing letter and its position as 0qi, and prefixes xn-- on that label only. The host is xn--exmplebank-0qi.example. The static page states this result and does not run an encoder.",
-        "zh": "瀏覽器不會把那個西里爾字母原樣送給 DNS。它保留 ASCII 字母 exmplebank，把缺的字和位置編成 0qi，並只在該標籤前加上 xn--。主機名稱是 xn--exmplebank-0qi.example。靜態頁面寫出這個結果，自己並沒有執行編碼器。"
+        "en": "DNS is given xn--exmplebank-0qi.example, not the Cyrillic letter. The page states that result and does not run an encoder.",
+        "zh": "送給 DNS 的是 xn--exmplebank-0qi.example，不是那個西里爾字母。頁面只寫出這個結果，自己沒有編碼器。"
       }
     },
     {
       "id": "demo-click",
-      "after": "how",
       "heading": {
-        "en": "What a click is meant to show",
-        "zh": "點下去應該看到什麼"
+        "en": "It still won't open",
+        "zh": "點了也打不開"
       },
       "intro": {
-        "en": "Both links are real anchors in index.html. Neither is meant to open a site.",
-        "zh": "兩個連結都是 index.html 裡的真連結。它們都不該打開一個網站。"
+        "en": "Both links on the page are real links, but neither one opens a site.",
+        "zh": "頁面上兩個都是真的連結，但點了都不會打開任何網站。"
       },
+      "after": "how",
       "spec": {
         "columns": [
           [
@@ -700,48 +700,48 @@
       "steps": [
         {
           "title": {
-            "en": "Two links",
-            "zh": "兩個連結"
+            "en": "Both labeled",
+            "zh": "兩個都標好"
           },
           "note": {
-            "en": "The question asks which link is fake, and the badges already say Real and Fake in both languages.",
-            "zh": "問題問哪一個是假的，徽章已經用兩種語言標成正牌和假的。"
+            "en": "The question asks which one is fake. The badges already mark which one is real and which is fake.",
+            "zh": "問題在問哪一個是假的。徽章已經標出哪個是真的、哪個是假的。"
           },
           "tone": "neutral",
           "icon": "eye"
         },
         {
           "title": {
-            "en": "Open fake",
-            "zh": "打開假連結"
+            "en": "Open the fake",
+            "zh": "打開第二個"
           },
           "note": {
-            "en": "The second anchor's href is the Unicode lookalike, with rel noopener and target _blank.",
-            "zh": "第二個連結的 href 是 Unicode 形近名稱，並帶有 rel noopener 和 target _blank。"
+            "en": "Its href is the Unicode lookalike, with rel=noopener and target=_blank.",
+            "zh": "它的 href 是 Unicode 形近名稱，並帶 rel=noopener 和 target=_blank。"
           },
           "tone": "warn",
           "icon": "window"
         },
         {
           "title": {
-            "en": "Address bar",
-            "zh": "看網址列"
+            "en": "Read the bar",
+            "zh": "讀網址列"
           },
           "note": {
-            "en": "The page says the address bar shows the xn-- host, and that the browser may warn.",
-            "zh": "頁面說明網址列會顯示 xn-- 主機名稱，瀏覽器也可能出現警告。"
+            "en": "The hint says the address bar will show the xn-- host, and the browser may warn you.",
+            "zh": "頁面說網址列會出現 xn-- 主機名稱，瀏覽器也可能跳出警告。"
           },
           "tone": "accent",
           "icon": "search"
         },
         {
           "title": {
-            "en": "No site",
-            "zh": "不會載入"
+            "en": "Nothing loads",
+            "zh": "沒有網站"
           },
           "note": {
-            "en": "Both names use .example, which RFC 2606 reserves, so they are not registered and do not resolve.",
-            "zh": "兩個名稱都用 .example，RFC 2606 保留這個頂級網域，所以無法註冊，也不會解析。"
+            "en": "RFC 2606 reserves .example, so neither name is registered and neither one resolves.",
+            "zh": "兩個名稱都在 .example。RFC 2606 保留這個網域，所以不能註冊，也不會解析。"
           },
           "tone": "info",
           "icon": "shield"
@@ -749,34 +749,34 @@
       ],
       "ticks": [
         {
-          "en": "badges already mark both",
-          "zh": "徽章已經標好兩邊"
+          "en": "both links are already badged",
+          "zh": "徽章兩邊都標了"
         },
         {
-          "en": "bar is expected to show xn--",
-          "zh": "網址列應顯示 xn--"
+          "en": "the bar will show xn--",
+          "zh": "網址列會出現 xn--"
         },
         {
-          "en": ".example does not resolve",
-          "zh": ".example 不會解析"
+          "en": ".example will not resolve",
+          "zh": ".example 解析不了"
         }
       ],
       "caption": {
-        "en": "The demo shows two anchors that look the same and are already labeled Real and Fake. Clicking the fake one is expected to show xn--exmplebank-0qi.example in the address bar, and possibly a browser warning. Some browsers also show the xn-- form in the link text itself. Both names are reserved, so the error page is the intended result.",
-        "zh": "Demo 顯示兩個看起來一樣的連結，而且已經標成正牌和假的。點假的那個，網址列預期會出現 xn--exmplebank-0qi.example，瀏覽器也可能警告。有些瀏覽器連連結文字都顯示 xn--。兩個名稱都是保留名稱，所以錯誤頁就是預期的結果。"
+        "en": "Some browsers also show the xn-- form in the link text itself. The error page is the result this demo wants.",
+        "zh": "有些瀏覽器連連結文字都顯示 xn--。錯誤頁就是這個 demo 要你看到的結果。"
       }
     },
     {
       "id": "name-boundary",
-      "after": "how",
       "heading": {
-        "en": "The spelling versus the host",
-        "zh": "拼法和主機名稱"
+        "en": "Not the name you see",
+        "zh": "看著像，主機不是"
       },
       "intro": {
-        "en": "The link text can show a familiar spelling while the request uses a different host.",
-        "zh": "連結文字可以顯示熟悉的拼法，實際請求卻是另一個主機名稱。"
+        "en": "The letters on screen can match a familiar name while the request uses a different host.",
+        "zh": "螢幕上的字母可以像一個熟悉的名稱，請求用的卻是另一個主機。"
       },
+      "after": "how",
       "spec": {
         "columns": [
           [
@@ -794,49 +794,49 @@
       },
       "zones": {
         "en": [
-          "on screen",
+          "what you read",
           "the browser",
           "the request"
         ],
         "zh": [
-          "螢幕上",
+          "你讀到的",
           "瀏覽器",
-          "實際請求"
+          "送出去的"
         ]
       },
       "steps": [
         {
           "title": {
-            "en": "Link text",
-            "zh": "連結文字"
+            "en": "Visible text",
+            "zh": "畫面上的字"
           },
           "note": {
-            "en": "The visible text of the fake link is the lookalike spelling, which matches the real name to the eye.",
-            "zh": "假連結畫面上的文字是形近拼法，肉眼看起來和正牌名稱相同。"
+            "en": "The fake link's visible text is the lookalike spelling, which matches the real name to the eye.",
+            "zh": "假連結畫面上的字是形近拼法，肉眼和正牌名稱一樣。"
           },
           "tone": "neutral",
           "icon": "eye"
         },
         {
           "title": {
-            "en": "IDN policy",
-            "zh": "顯示政策"
+            "en": "Browser policy",
+            "zh": "瀏覽器政策"
           },
           "note": {
-            "en": "The demo says to watch for the xn-- form, and its checklist names the IDN display policy in Chrome, Edge, and Firefox.",
-            "zh": "Demo 要你留意 xn-- 形式，它的清單也寫了 Chrome、Edge、Firefox 的 IDN 顯示政策。"
+            "en": "The checklist tells you to watch for xn--, and it names Chrome, Edge, and Firefox.",
+            "zh": "清單要你留意 xn--，並寫了 Chrome、Edge、Firefox 的 IDN 顯示政策。"
           },
           "tone": "accent",
           "icon": "shield"
         },
         {
           "title": {
-            "en": "Other host",
-            "zh": "另一主機"
+            "en": "Punycode host",
+            "zh": "另一個主機"
           },
           "note": {
-            "en": "A resolved request would use xn--exmplebank-0qi.example, and in this demo the name does not resolve.",
-            "zh": "若這個名稱能解析，請求會使用 xn--exmplebank-0qi.example；在這個 demo 裡它不會解析。"
+            "en": "A lookup that resolved would use <code>xn--exmplebank-0qi.example</code>. This demo never resolves.",
+            "zh": "如果名稱能解析，請求會用 <code>xn--exmplebank-0qi.example</code>。這個 demo 不會解析。"
           },
           "tone": "warn",
           "icon": "globe"
@@ -844,21 +844,21 @@
       ],
       "ticks": [
         {
-          "en": "text can match the real name",
-          "zh": "文字可以像正牌名稱"
+          "en": "the eye can match the real name",
+          "zh": "肉眼可以看成正牌"
         },
         {
-          "en": "the bar may show xn--",
-          "zh": "網址列可能顯示 xn--"
+          "en": "watch the bar for xn--",
+          "zh": "網址列要看 xn--"
         },
         {
-          "en": "the DNS name differs",
-          "zh": "DNS 名稱並不相同"
+          "en": "the DNS name is different",
+          "zh": "DNS 名稱並不一樣"
         }
       ],
       "caption": {
-        "en": "A reader can see a spelling that matches the real example while the host in the request is the Punycode name. The dashed line is the browser IDN display the demo tells you to watch. This demo's names never resolve, because .example is reserved.",
-        "zh": "讀者可能看到和正牌範例相同的拼法，請求裡的主機名稱卻是 Punycode。虛線是 Demo 要你看的瀏覽器 IDN 顯示。這個 demo 的名稱不會解析，因為 .example 是保留網域。"
+        "en": "If the address bar shows xn--, stop and read the name again.",
+        "zh": "網址列如果出現 xn--，就停下來，把名稱再讀一次。"
       }
     }
   ]
